@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881865674352",
+    "project_id": "aiims-health-app",
+    "storage_bucket": "aiims-health-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881865674352:android:0ba754b2a2bc22dce4aeb5",
+        "android_client_info": {
+          "package_name": "com.example.aiimshealthapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMpRinPWVs4OgMiiOLUwBAyhKX_oziBz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

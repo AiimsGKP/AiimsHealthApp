@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/income_level"
+        android:textSize="25sp"
+        android:layout_marginBottom="20dp"
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:layout_marginBottom="20dp"
+        android:id="@+id/spinnerEmploymentStatus"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/employment_status_array" />
+
+    <EditText
+        android:layout_marginBottom="20dp"
+        android:id="@+id/etEducationLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:hint="Education Level" />
+
+    <Button
+        android:id="@+id/btnPrevious"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous" />
+</LinearLayout>

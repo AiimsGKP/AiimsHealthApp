@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SemiCircleProgressBar">
+        <attr name="semiBackgroundColor" format="color" />
+        <attr name="semiGradientStartColor" format="color" />
+        <attr name="semiGradientEndColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="FullCircleProgressBar">
+        <attr name="fullBackgroundColor" format="color" />
+        <attr name="fullGradientStartColor" format="color" />
+        <attr name="fullGradientEndColor" format="color" />
+    </declare-styleable>
+</resources>

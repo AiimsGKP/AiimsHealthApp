@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">AIIMS Health App</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_register">Log in or Sign up</string>
+    <string name="default_web_client_id">881865674352-23cplbu56b2g0i6io5kf53jisir7aalj.apps.googleusercontent.com</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="otp">OTP</string>
+    <string name="submit_otp">Submit OTP</string>
+    <string name="continue_btn">Continue</string>
+    <string name="username">Username</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="login_successful">Login successful</string>
+    <string name="error_checking_username">Error checking username.</string>
+    <string name="registration_successful">Registration successful.</string>
+    <string name="registration_failed">Registration failed.</string>
+    <string name="profile_update_failed">Profile Updated Failed!</string>
+    <string name="number_of_days">Number of Days</string>
+    <string name="hours">Hours</string>
+    <string name="mins">Mins</string>
+    <string name="socio_demographic">Socio-Demographic</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="age">Age</string>
+    <string name="income_level">Income Level</string>
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="employment_status_array">
+        <item>Employed</item>
+        <item>Unemployed</item>
+        <item>Student</item>
+        <item>Retired</item>
+    </string-array>
+</resources>
