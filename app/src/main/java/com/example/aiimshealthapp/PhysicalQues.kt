@@ -25,7 +25,7 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
     var noDays = ""
     var noHours = ""
     var noMins = ""
-    var perPageAns = mutableListOf<String>("", "", "", "")
+    var perPageAns = mutableListOf<String>("", "", "")
     var allAnswers = mutableListOf<List<String>>()
 
 
@@ -103,17 +103,19 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
         }
 
         if(clickedBtn.id == R.id.next_btn){
-            perPageAns = mutableListOf("", "", "", "")
+            perPageAns = mutableListOf("", "", "",)
             if(selectedAnswer != ""){
                 if(selectedAnswer == "Yes") {
                     noDays = findViewById<EditText>(R.id.etDays).text.toString()
                     noHours = findViewById<EditText>(R.id.etHours).text.toString()
-                    noMins = findViewById<EditText>(R.id.etMins).text.toString()
+                    noMins = (noHours.toInt()*60 + findViewById<EditText>(R.id.etMins).text.toString().toInt()).toString()
                     if (noDays.isNotEmpty() && noHours.isNotEmpty() && noMins.isNotEmpty()) {
+                        if(noDays.toInt() > 7 || noMins.toInt() > 960 ){
+                            return
+                        }
                         perPageAns.set(0, selectedAnswer)
                         perPageAns.set(1, noDays)
-                        perPageAns.set(2, noHours)
-                        perPageAns.set(3, noMins)
+                        perPageAns.set(2, noMins)
                         allAnswers.add(perPageAns)
                         currentQuestionIndex++
                         selectedAnswer = ""

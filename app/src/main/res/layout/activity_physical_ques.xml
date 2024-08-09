@@ -117,6 +117,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDays"
+                            android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/number_of_days" />
@@ -158,6 +159,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etHours"
+                                android:inputType="number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hours" />
@@ -170,6 +172,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etMins"
+                                android:inputType="number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/mins" />

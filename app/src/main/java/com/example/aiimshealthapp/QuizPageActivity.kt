@@ -106,10 +106,13 @@ class QuizPageActivity : AppCompatActivity() {
         socQuestionModel.add(Ques(listOf("There are enough people I feel close to \n" +
                 "     कई लोग हैं जिनके मैं करीब महसूस करता हूँ [SL]\n")))
 
-        menQuestionModel.add(Ques(listOf("I’ve been feeling optimistic about the Future.\n" +
-                "मैं भविष्य को लेकर आशावादी महसूस कर रहा हूँ।\n")))
-        menQuestionModel.add(Ques(listOf("I’ve been feeling useful.\n" +
-                "    मैं  उपयोगी महसूस कर रहा हूँ।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been feeling optimistic about the Future.\n" + "मैं भविष्य को लेकर आशावादी महसूस कर रहा हूँ।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been feeling useful.\n" + "मैं  उपयोगी महसूस कर रहा हूँ।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been feeling relaxed.\n" +"मैं  आराम महसूस कर रहा हूं।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been dealing with problems well.\n" + "मैं समस्याओं से अच्छी तरह निपट रहा हूं।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been thinking clearly.\n" + "मैं स्पष्ट रूप से  सोच रहा हूं।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been feeling close to other people. \n" + "मैं अन्य लोगों के करीब महसूस कर रहा हूँ।\n")))
+        menQuestionModel.add(Ques(listOf("I’ve been able to make up my own mind about things.\n" + "मैं चीज़ों के बारे में अपना मन बनाने में सक्षम हूँ।\n")))
 
         val latch = CountDownLatch(3)
         //checking if the answers exists on the database
@@ -167,14 +170,15 @@ class QuizPageActivity : AppCompatActivity() {
                         var score = 0
                         if(allAnswers.isNotEmpty()){
                             ids.add(id)
-//                            Log.i("CHECK_RESPONSE",allAnswers.toString())
+                            Log.i("CHECK_RESPONSE",allAnswers.toString())
                             if(id==1){
+                                score = calculatePhysicalScore(allAnswers)
                             }
                             else if(id==2){
+                                score = calculateMentalScore(allAnswers)
                             }
                             else if(id==3){
-                                score = calculateLonelinessScore(allAnswers)
-//                                Log.i("CHECK_RESPONSE", score.toString())
+                                score = calculateSocialScore(allAnswers)
                             }
                         }
                         db.collection("questions2")
@@ -220,6 +224,36 @@ class QuizPageActivity : AppCompatActivity() {
 
     }
 
+    private fun calculatePhysicalScore(allAnswers: List<String>): Int {
+        val metValues = intArrayOf(8, 4, 4, 8, 4, 4)
+        var x = 1
+        var p = 1
+        var sum = 0
+        var y = 0
+        for(i in allAnswers){
+            if((x-1)%3==0 || i.isEmpty()){
+                x++
+                continue
+            }
+            p *= i.toInt()
+            if(x%3==0){
+                sum += p*metValues[y]
+                p = 1
+                y++
+            }
+            x++
+        }
+        return sum
+    }
+
+    private fun calculateMentalScore(allAnswers: List<String>): Int {
+        var score = 0
+        for(ans in allAnswers){
+            score += ans.toInt()
+        }
+        return score
+    }
+
     interface CheckAnswerCallback {
         fun onResult(result: Boolean, answers: List<String>?)
     }
@@ -258,7 +292,7 @@ class QuizPageActivity : AppCompatActivity() {
     }
 
 
-    fun calculateLonelinessScore(answers: List<String>): Int {
+    fun calculateSocialScore(answers: List<String>): Int {
         if (answers.size != 6) {
             throw IllegalArgumentException("Exactly 6 answers are required")
         }

@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
                 android:backgroundTint="@color/fphysical"
-                android:text = "Next"
+                android:text = "@string/next"
                 android:textColor="@color/white"
                 android:paddingVertical="12dp"
                 android:gravity="center_vertical"

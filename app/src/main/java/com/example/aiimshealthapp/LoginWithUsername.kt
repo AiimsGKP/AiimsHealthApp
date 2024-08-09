@@ -47,6 +47,7 @@ class LoginWithUsername : AppCompatActivity() {
                     registerUser(username, email, password)
                 } else {
                     loginUser(email, password)
+
                 }
             }
             .addOnFailureListener {
@@ -62,10 +63,11 @@ class LoginWithUsername : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Toast.makeText(baseContext, getString(R.string.login_successful),
                         Toast.LENGTH_SHORT).show()
-                    // Navigate to next activity
-                    val intent = Intent(this, MainActivity::class.java)
+                    setInProgress(false)
+                    val intent = Intent(this, Dashboard::class.java)
                     startActivity(intent)
                     setInProgress(false)
+                    // Navigate to next activity
                 } else {
                     Toast.makeText(baseContext, getString(R.string.invalid_credentials),
                         Toast.LENGTH_SHORT).show()
@@ -99,7 +101,7 @@ class LoginWithUsername : AppCompatActivity() {
                                         Toast.makeText(baseContext, getString(R.string.registration_successful),
                                             Toast.LENGTH_SHORT).show()
                                         // Navigate to login activity or next activity
-                                        val intent = Intent(this, Dashboard::class.java)
+                                        val intent = Intent(this, SocioDemographic::class.java)
                                         startActivity(intent)
                                     }
                                     .addOnFailureListener {

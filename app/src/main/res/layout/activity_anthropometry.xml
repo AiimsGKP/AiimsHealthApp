@@ -3,35 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center">
 
-    <EditText
-        android:id="@+id/etIncome"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/income_level"
-        android:textSize="25sp"
-        android:layout_marginBottom="20dp"
-        android:inputType="numberDecimal" />
+        android:text="@string/anthropometric"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:layout_marginBottom="30dp"/>
 
-    <Spinner
-        android:layout_marginBottom="20dp"
-        android:id="@+id/spinnerEmploymentStatus"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:entries="@array/employment_status_array" />
 
-    <EditText
-        android:layout_marginBottom="20dp"
-        android:id="@+id/etEducationLevel"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:hint="Education Level" />
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/height" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/weight" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWaist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/waist_circumference" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBMI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/bmi" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnPrevious"
+        android:id="@+id/btnNextNextNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Previous" />
+        android:text="Next" />
 </LinearLayout>

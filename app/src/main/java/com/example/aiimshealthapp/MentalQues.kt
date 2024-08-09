@@ -77,8 +77,12 @@ class MentalQues : AppCompatActivity(), View.OnClickListener {
 
         }
         else{
-            selectedAnswer = clickedBtn.text.toString()
-            selectedAnswer = selectedAnswer.substringBefore(" /")
+            if(clickedBtn.id == R.id.btn0) selectedAnswer = "1"
+            else if(clickedBtn.id == R.id.btn1) selectedAnswer = "2"
+            else if(clickedBtn.id == R.id.btn2) selectedAnswer = "3"
+            else if(clickedBtn.id == R.id.btn3) selectedAnswer = "4"
+            else if(clickedBtn.id == R.id.btn4) selectedAnswer = "5"
+
             clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
         }
     }

@@ -4,7 +4,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login_register">Log in or Sign up</string>
-    <string name="default_web_client_id">881865674352-23cplbu56b2g0i6io5kf53jisir7aalj.apps.googleusercontent.com</string>
+    <string name="default_web_client_id" translatable="false">881865674352-23cplbu56b2g0i6io5kf53jisir7aalj.apps.googleusercontent.com</string>
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="phone_number">Phone Number</string>
     <string name="otp">OTP</string>
@@ -27,7 +27,21 @@
     <string name="female">Female</string>
     <string name="other">Other</string>
     <string name="age">Age</string>
-    <string name="income_level">Income Level</string>
+    <string name="income_level">Monthly Income</string>
+    <string name="next">Next</string>
+    <string name="height">Height in cms</string>
+    <string name="anthropometric">Anthropometric</string>
+    <string name="weight">Weight in kgs</string>
+    <string name="waist_circumference">Waist Circumference</string>
+    <string name="bmi">BMI</string>
+    <string name="do_you_consume_any_form_of_tobacco_items">Do you consume any form of tobacco items?</string>
+    <string name="do_you_consume_alcohol">Do you consume alcohol?</string>
+    <string name="history_of_diabetes">History of Diabetes</string>
+    <string name="if_yes_enter_number_of_years_of_disease">If yes, enter number of years of disease</string>
+    <string name="history_of_hypertension">History of Hypertension</string>
+    <string name="type_of_medication">Type of Medication</string>
+    <string name="hours_of_sleep">Hours of Sleep</string>
+    <string name="dietary_habit">Dietary Habit</string>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
@@ -37,7 +51,22 @@
     <string-array name="employment_status_array">
         <item>Employed</item>
         <item>Unemployed</item>
-        <item>Student</item>
-        <item>Retired</item>
+    </string-array>
+    <string-array name="education_level_array">
+        <item>Illiterate</item>
+        <item>Primary School</item>
+        <item>Middle School</item>
+        <item>High School</item>
+        <item>Intermediate/Diploma</item>
+        <item>Graduate</item>
+        <item>Professional Degree</item>
+    </string-array>
+    <string-array name="yes_no">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="diet">
+        <item>Vegetarian</item>
+        <item>Non-Vegetarian</item>
     </string-array>
 </resources>

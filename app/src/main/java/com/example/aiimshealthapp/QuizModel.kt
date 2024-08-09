@@ -30,20 +30,6 @@ data class Question(
 }
 
 
-//data class QuizModel(
-//    val id: String = "",
-//    val title: String = "",
-//    val subtitle: String = "",
-//    val questionList: List<QuestionModel> = emptyList(),
-//    var answers: List<String> = emptyList(),
-//    var score: Int = 0
-//)
-//
-//data class QuestionModel(
-//    val question: String = "",
-//    val options: List<String> = emptyList()
-//)
-
 data class QuesModel(
     val id :String = "",
     val questions: List<Ques> = emptyList(),

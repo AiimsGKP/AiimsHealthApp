@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etIncome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint= "@string/income_level" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:layout_marginBottom="20dp"
+        android:id="@+id/spinnerEmployment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/employment_status_array" />
+
+    <Spinner
+        android:layout_marginBottom="20dp"
+        android:id="@+id/etEducation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/education_level_array" />
+
+    <Button
+        android:id="@+id/btnNextNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next" />
+</LinearLayout>
