@@ -58,11 +58,16 @@ class MentalQues : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         binding.apply {
-            btn0.setBackgroundColor(getColor(R.color.options))
-            btn1.setBackgroundColor(getColor(R.color.options))
-            btn2.setBackgroundColor(getColor(R.color.options))
-            btn3.setBackgroundColor(getColor(R.color.options))
-            btn4.setBackgroundColor(getColor(R.color.options))
+            btn0.setBackgroundResource(R.drawable.rounded_button_default)
+            btn1.setBackgroundResource(R.drawable.rounded_button_default)
+            btn2.setBackgroundResource(R.drawable.rounded_button_default)
+            btn3.setBackgroundResource(R.drawable.rounded_button_default)
+            btn4.setBackgroundResource(R.drawable.rounded_button_default)
+            btn0.setTextColor(getColor(R.color.text))
+            btn1.setTextColor(getColor(R.color.text))
+            btn2.setTextColor(getColor(R.color.text))
+            btn3.setTextColor(getColor(R.color.text))
+            btn4.setTextColor(getColor(R.color.text))
 
         }
 
@@ -83,7 +88,8 @@ class MentalQues : AppCompatActivity(), View.OnClickListener {
             else if(clickedBtn.id == R.id.btn3) selectedAnswer = "4"
             else if(clickedBtn.id == R.id.btn4) selectedAnswer = "5"
 
-            clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
+            clickedBtn.setBackgroundResource(R.drawable.rounded_button_selected)
+            clickedBtn.setTextColor(getColor(R.color.white))
         }
     }
 }

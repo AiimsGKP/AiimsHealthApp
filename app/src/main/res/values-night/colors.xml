@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stroke_color">#242424</color>
+    <color name="card_background">#3E3E3E</color>
+    <color name="progressbar">#CECECE</color>
+    <color name="text">#CECECE</color>
+    <color name="stepBack">#434343</color>
+    <color name="options">#454749</color>
+</resources>

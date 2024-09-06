@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
 
     <application
         android:allowBackup="true"
@@ -12,59 +20,100 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.Dark"
+        android:theme="@style/Theme.AIIMSHealthApp"
         tools:targetApi="31">
+
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".HealthInfoPageActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".HealthInfoActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".DataUploading"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".MedicationReminderActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".HydrationReminderActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
+        <activity
+            android:name=".StepCounterActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".SocioDemographic"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".MentalQues"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".SocialQues"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".PhysicalQues"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".QuizPageActivity"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".Dashboard"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".OtpActivity"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".LoginWithEmail"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".LoginWithUsername"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".GetStartedActivity"
             android:exported="false"
-            android:theme="@style/Theme.AIIMSHealthApp" />
+            android:theme="@style/AppTheme" /> <!-- Changed to light mode -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AIIMSHealthApp">
+            android:theme="@style/AppTheme"> <!-- Changed to light mode -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true" />
+
+        <receiver
+            android:name=".ResetStepsReceiver" />
+
+
+        <service
+            android:name=".StepCounterService"
+            android:exported="false"
+            android:foregroundServiceType="health" />
     </application>
 
 </manifest>

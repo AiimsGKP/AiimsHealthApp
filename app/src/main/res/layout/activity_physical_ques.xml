@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="30dp"
-    tools:context=".QuizActivity">
+    android:theme="@style/Theme.Material3.Light"
+    tools:context=".PhysicalQues">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,8 +21,8 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/text"
             android:layout_centerVertical="true"
-            android:text="Question 7/20"
             tools:text="Question 7/20" />
     </RelativeLayout>
 
@@ -37,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        style="@style/CardStyle"
         android:layout_marginVertical="8dp"
         android:elevation="4dp">
 
@@ -70,10 +72,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
-                    android:backgroundTint="@color/options"
+                    android:background="@drawable/rounded_button_default"
                     android:gravity="center_vertical"
-                    android:paddingVertical="12dp"
-                    android:textColor="@color/white"
+                    android:padding="12dp"
+                    android:textColor="@color/text"
                     android:textSize="18sp"
                     android:text="Yes" />
 
@@ -82,10 +84,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
-                    android:backgroundTint="@color/options"
+                    android:background="@drawable/rounded_button_default"
                     android:gravity="center_vertical"
-                    android:paddingVertical="12dp"
-                    android:textColor="@color/white"
+                    android:padding="12dp"
+                    android:textColor="@color/text"
                     android:textSize="18sp"
                     android:text="No" />
 
@@ -120,6 +122,7 @@
                             android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/text"
                             android:hint="@string/number_of_days" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -162,6 +165,7 @@
                                 android:inputType="number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/text"
                                 android:hint="@string/hours" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -175,6 +179,7 @@
                                 android:inputType="number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/text"
                                 android:hint="@string/mins" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -183,17 +188,17 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/next_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginVertical="4dp"
-                    android:backgroundTint="@color/fphysical"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="12dp"
-                    android:text="Next"
+                    android:background = "@drawable/rounded_button_selected"
+                    android:text = "Next"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:textSize="18sp"
+                    android:id="@+id/next_btn"/>
 
             </LinearLayout>
         </ScrollView>

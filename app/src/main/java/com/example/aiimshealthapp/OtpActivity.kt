@@ -36,7 +36,7 @@ class OtpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_otp)
         val phoneNumber = intent.getStringExtra("phone").toString()
         sendOtp(phoneNumber, false)
 

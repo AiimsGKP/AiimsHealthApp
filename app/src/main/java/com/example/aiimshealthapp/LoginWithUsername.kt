@@ -28,6 +28,7 @@ class LoginWithUsername : AppCompatActivity() {
         val registerButton = findViewById<Button>(R.id.btnLogin)
         val usernameEditText = findViewById<EditText>(R.id.username)
         val passwordEditText = findViewById<EditText>(R.id.password)
+        val loginEmail = findViewById<Button>(R.id.loginEmail)
 
 
         registerButton.setOnClickListener {
@@ -36,6 +37,12 @@ class LoginWithUsername : AppCompatActivity() {
             val password = passwordEditText.text.toString().trimEnd()
             checkAndRegisterOrLogin(username, email, password)
         }
+
+        loginEmail.setOnClickListener {
+            val intent = Intent(this, LoginWithEmail::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun checkAndRegisterOrLogin(username: String, email: String, password: String) {

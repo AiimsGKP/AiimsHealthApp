@@ -16,7 +16,6 @@ data class Metrics(
                 "lastName" to metrics.lastName,
                 "gender" to metrics.gender,
                 "age" to metrics.age,
-                "incomeLevel" to metrics.incomeLevel,
                 "educationLevel" to metrics.educationLevel,
                 "employmentStatus" to metrics.employmentStatus,
                 "height" to metrics.height,
@@ -30,7 +29,9 @@ data class Metrics(
                 "hypertension" to metrics.hypertension,
                 "medication" to metrics.medication,
                 "sleep" to metrics.sleep,
-                "diet" to metrics.diet
+                "diet" to metrics.diet,
+
+                "stepGoal" to metrics.stepGoal
                 )
         )
     }
@@ -41,7 +42,6 @@ data class MetricsData(
     val lastName:String = "",
     val gender:String = "",
     val age:String = "",
-    val incomeLevel:String = "",
     val educationLevel:String = "",
     val employmentStatus:String = "",
     val height:String = "",
@@ -55,5 +55,6 @@ data class MetricsData(
     val medication:String = "",
     val sleep:String = "",
     val diet:String = "",
+    val stepGoal:String = "-1"
 )
 

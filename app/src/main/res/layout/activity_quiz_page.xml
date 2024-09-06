@@ -1,146 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="30dp"
-    tools:context=".QuizPageActivity">
+    style="@style/Theme.AIIMSHealthApp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvPhysical"
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="24dp">
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.087"
+        tools:context=".QuizPageActivity">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/illustration2"/>
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPhysical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_margin="10dp"
+            android:elevation="10dp"
+            style="@style/CardStyle"
+            app:cardCornerRadius="10dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/quiz_title_text1"
-                    android:layout_width="wrap_content"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text = "Physical Health"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/quiz_subtitle_text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text = "This is physical health"
-                    android:textSize="18sp"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-            </LinearLayout>
-        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/quiz_title_text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Physical Health"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-    </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:id="@+id/quiz_subtitle_text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="Check Your Physical Health"
+                            android:textSize="18sp" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvMental"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="24dp">
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="5 Ques \n\n3 mins"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvMental"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_margin="10dp"
+            style="@style/CardStyle"
+            android:elevation="10dp"
+            app:cardCornerRadius="10dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/quiz_title_text2"
-                    android:layout_width="wrap_content"
+                android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text = "Mental Health"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/quiz_subtitle_text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text = "This is mental health"
-                    android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/quiz_title_text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mental Health"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-            </LinearLayout>
-        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/quiz_subtitle_text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="Assess Your Mind’s Well-being"
+                            android:textSize="18sp" />
 
-    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="7 Ques \n\n2 mins"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </RelativeLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvSocial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="24dp">
+        </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvSocial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            style="@style/CardStyle"
+            android:layout_margin="10dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="10dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/quiz_title_text3"
-                    android:layout_width="wrap_content"
+                android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text = "Social Health"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/quiz_subtitle_text3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text = "This is social health"
-                    android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/quiz_title_text3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Social Health"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/quiz_subtitle_text3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="Evaluate Your Social Wellness"
+                            android:textSize="18sp" />
 
-        </RelativeLayout>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="6 Ques \n\n2 mins"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Name"
-        android:gravity="center"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="match_parent"
+        style="@style/CardStyle"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Dashboard" />
+        android:layout_gravity="center"
+        android:layout_marginVertical="20dp"
+        android:enabled="false"
+        android:text="Dashboard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main"
+        app:layout_constraintVertical_bias="0.253" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

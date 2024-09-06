@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="48dp"
+    android:layout_marginTop="25dp"
+    tools:context=".HealthInfoActivity">
+
+
+    <ScrollView
+        style="@style/AppTheme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/main"
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Health Tip Categories"
+                android:padding="20dp"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Physical Activity"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Diet"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn3"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Hygiene"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn4"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Pregnancy"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn5"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Breast-feeding"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn6"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Infant-feeding"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn7"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Child-feeding"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn8"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Obesity"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn9"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Food Hygiene"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn10"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Hydration"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn11"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="General"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/btn12"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="20dp"
+                    android:text="Alcohol"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    android:textSize="25sp" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
 
         val button = findViewById<Button>(R.id.button)
         if (mAuth.currentUser != null) {
-            val intent = Intent(this, SocioDemographic::class.java)
+            val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
             finish()
             return

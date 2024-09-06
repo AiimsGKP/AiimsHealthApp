@@ -42,6 +42,8 @@
     <string name="type_of_medication">Type of Medication</string>
     <string name="hours_of_sleep">Hours of Sleep</string>
     <string name="dietary_habit">Dietary Habit</string>
+    <string name="hydration_reminder">Hydration Reminder</string>
+    <string name="medication_reminder">Medication Reminder</string>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>

@@ -57,26 +57,27 @@ class SocialQues : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         binding.apply {
-            btn0.setBackgroundColor(getColor(R.color.options))
-            btn1.setBackgroundColor(getColor(R.color.options))
-            btn2.setBackgroundColor(getColor(R.color.options))
-
+            btn0.setBackgroundResource(R.drawable.rounded_button_default)
+            btn1.setBackgroundResource(R.drawable.rounded_button_default)
+            btn2.setBackgroundResource(R.drawable.rounded_button_default)
+            btn0.setTextColor(getColor(R.color.text))
+            btn1.setTextColor(getColor(R.color.text))
+            btn2.setTextColor(getColor(R.color.text))
         }
 
         val clickedBtn = view as Button
-        if(clickedBtn.id == R.id.next_btn){
-            if(selectedAnswer != ""){
+        if (clickedBtn.id == R.id.next_btn) {
+            if (selectedAnswer != "") {
                 allAnswers.add(selectedAnswer)
                 currentQuestionIndex++
                 loadQuestions()
             }
             selectedAnswer = ""
-
-        }
-        else{
-            selectedAnswer = clickedBtn.text.toString()
-            selectedAnswer = selectedAnswer.substringBefore(" /")
-            clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
+        } else {
+            selectedAnswer = clickedBtn.text.toString().substringBefore(" /")
+            clickedBtn.setBackgroundResource(R.drawable.rounded_button_selected)
+            clickedBtn.setTextColor(getColor(R.color.white))
         }
     }
+
 }

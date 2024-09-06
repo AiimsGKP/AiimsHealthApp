@@ -25,21 +25,17 @@ class LoginWithEmail : AppCompatActivity() {
 
         val buttonReg = findViewById<Button>(R.id.btnRegister)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val loginUsername = findViewById<Button>(R.id.loginUsername)
         auth = FirebaseAuth.getInstance()
-
+        loginUsername.setOnClickListener {
+            val intent = Intent(this, LoginWithUsername::class.java)
+            startActivity(intent)
+        }
         buttonReg.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
 
-//            if(TextUtils.isEmpty(email)){
-//                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//            if(TextUtils.isEmpty(password)){
-//                Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
 
             if(!(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))){
                 auth.createUserWithEmailAndPassword(email, password)

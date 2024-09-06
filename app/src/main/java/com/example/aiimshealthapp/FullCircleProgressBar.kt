@@ -25,6 +25,7 @@ class FullCircleProgressBar @JvmOverloads constructor(
     }
 
     private var progress = 0
+    private var max = 100 // Default max value is 100
     private var gradientColors: IntArray? = null
 
     init {
@@ -79,7 +80,7 @@ class FullCircleProgressBar @JvmOverloads constructor(
         canvas.drawCircle(cx, cy, radius - backgroundPaint.strokeWidth / 2, backgroundPaint)
 
         // Draw foreground circle
-        val sweepAngle = (progress / 100f) * 360
+        val sweepAngle = (progress / max.toFloat()) * 360f
         canvas.drawArc(
             cx - radius + backgroundPaint.strokeWidth / 2,
             cy - radius + backgroundPaint.strokeWidth / 2,
@@ -92,8 +93,22 @@ class FullCircleProgressBar @JvmOverloads constructor(
         )
     }
 
+    // Function to set progress
     fun setProgress(progress: Int) {
-        this.progress = progress
+        this.progress = progress.coerceIn(0, max) // Ensure progress is within bounds
         invalidate()
+    }
+
+    // Function to set max value
+    fun setMax(max: Int) {
+        if (max > 0) {
+            this.max = max
+            invalidate() // Redraw the view with the new max value
+        }
+    }
+
+    // Function to get max value
+    fun getMax(): Int {
+        return max
     }
 }

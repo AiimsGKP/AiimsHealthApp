@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.aiimshealthapp"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.firebase.auth)
@@ -69,6 +68,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.play.services.wearable)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,4 +81,13 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
+    implementation (libs.androidx.appcompat.v170)
+    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    implementation("androidx.activity:activity-compose")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.room:room-runtime:2.5.0")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation ("com.google.android.material:material:1.6.1")
+
 }

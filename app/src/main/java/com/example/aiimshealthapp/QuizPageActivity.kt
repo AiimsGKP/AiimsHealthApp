@@ -22,6 +22,8 @@ class QuizPageActivity : AppCompatActivity() {
     private val socQuestionModel = mutableListOf<Ques>()
     private val Ques = mutableListOf<QuesModel>()
     private val ids = mutableListOf<Int>()
+    private lateinit var dashBtn : Button
+    private val tag = "CHECK_RESPONSE"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +34,8 @@ class QuizPageActivity : AppCompatActivity() {
         val physicalBtn = findViewById<CardView>(R.id.cvPhysical)
         val mentalBtn = findViewById<CardView>(R.id.cvMental)
         val socialBtn = findViewById<CardView>(R.id.cvSocial)
-        val dashBtn = findViewById<Button>(R.id.button2)
-
+        dashBtn = findViewById(R.id.button2)
+        dashBtn.isEnabled = false
         loadDatabase()
 
         physicalBtn.setOnClickListener {
@@ -55,43 +57,121 @@ class QuizPageActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
     }
+
+    private fun enableBtn(){
+        var count = 0
+        dashBtn.isEnabled = false  // Initially disable the button to indicate loading
+
+        if (currentUser != null) {
+            db.collection("questions2")
+                .whereEqualTo("user.email", currentUser.email)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        val data = document.data
+                        val quizes = data["quizes"] as? List<Map<String, Any>>
+
+                        if (quizes != null) {
+                            for (quiz in quizes) {
+                                val answers = quiz["answers"] as? List<String>
+
+                                // Check if the answers list is not null or empty
+                                if (!answers.isNullOrEmpty()) count += 1
+
+                                // If the count reaches 3, enable the button and break out of the loop early
+                                if (count == 3) {
+                                    dashBtn.isEnabled = true
+                                    break
+                                }
+                            }
+                        }
+
+                        // No need to process further documents if count == 3
+                        if (count == 3) break
+                    }
+                }
+                .addOnFailureListener {
+                    // Optionally handle errors, e.g., show a message to the user
+                }
+        }
+    }
+
 
     private fun loadPhysicalQues(){
         val intent = Intent(this, PhysicalQues::class.java)
         intent.putParcelableArrayListExtra("physQuesList", ArrayList(physQuestionModel))
         startActivity(intent)
-        finish()
     }
 
     private fun loadSocialQues(){
         val intent = Intent(this, SocialQues::class.java)
         intent.putParcelableArrayListExtra("socQuesList", ArrayList(socQuestionModel))
         startActivity(intent)
-        finish()
     }
 
     private fun loadMentalQues(){
         val intent = Intent(this, MentalQues::class.java)
         intent.putParcelableArrayListExtra("menQuesList", ArrayList(menQuestionModel))
         startActivity(intent)
-        finish()
     }
 
 
     private fun loadDatabase(){
-        physQuestionModel.add(Ques(listOf("Does your work involve vigorous-intensity activity that causes  large increases in breathing or heart rate like (carrying or lifting  heavy loads, \tdigging or construction work)  for at least 10  minutes continuously?   \n" +
-                "\tक्या आपके काम में अत्यधिक तीव्रता वाली गतिविधि शामिल है जिससे सांस लेने या हृदय गति में बहुत अधिक वृद्धि होती है जैसे (भारी वजन उठाना या उठाना, खु\tदाई या निर्माण कार्य) कम से कम 10 मिनट तक लगातार?\n","In a typical week, on how many days do you do vigorous intensity activities as part of your work?  \n" +
-                "\tएक सामान्य सप्ताह में आप कितने दिन जोरदार व्यायाम करते हैं - आपके काम के हिस्से के रूप में गहन गतिविधियाँ?  \n", "How much time do you spend doing vigorous-intensity activities  at work on a typical day? \n" +
-                "\tआप ज़ोरदार तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं?  एक सामान्य दिन पर काम पर?  \n")))
-        physQuestionModel.add(Ques(listOf("Does your work involve moderate-intensity activity, that causes  small increases in breathing or heart rate such as brisk walking  (or carrying \tlight loads)  for at least 10 minutes continuously?\n" +
-                "\tक्या आपके काम में मध्यम-तीव्रता वाली गतिविधि शामिल है, जिससे सांस लेने या हृदय गति में थोड़ी वृद्धि होती है जैसे कि कम से कम 10 मिनट तक लगातार तेज \tचलना (या हल्का भार उठाना)?    \n","In a typical week, on how many days do you do moderateintensity activities as part of your work?   \n" +
-                "\tएक सामान्य सप्ताह में आप कितने दिन मध्यम कार्य करते हैं- आपके काम के हिस्से के रूप में गहन गतिविधियाँ?   \n", "How much time do you spend doing moderate-intensity activities at work on a typical day?  \n" +
-                "\tआप मध्यम तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं?  एक सामान्य दिन पर काम पर?  \n")))
+        // P1
+        physQuestionModel.add(Ques(listOf(
+            "Does your work involve vigorous-intensity activity that causes large increases in breathing or heart rate like (carrying or lifting heavy loads, digging or construction work) for at least 10 minutes continuously? \n" +
+                    "क्या आपके काम में अत्यधिक तीव्रता वाली गतिविधि शामिल है जिससे सांस लेने या हृदय गति में बहुत अधिक वृद्धि होती है जैसे (भारी वजन उठाना या उठाना, खुदाई या निर्माण कार्य) कम से कम 10 मिनट तक लगातार?\n",
+            "In a typical week, on how many days do you do vigorous intensity activities as part of your work? \n" +
+                    "एक सामान्य सप्ताह में आप कितने दिन जोरदार व्यायाम करते हैं - आपके काम के हिस्से के रूप में गहन गतिविधियाँ?\n",
+            "How much time do you spend doing vigorous-intensity activities at work on a typical day? \n" +
+                    "आप ज़ोरदार तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं? एक सामान्य दिन पर काम पर?\n"
+        )))
+
+// P4
+        physQuestionModel.add(Ques(listOf(
+            "Does your work involve moderate-intensity activity that causes small increases in breathing or heart rate such as brisk walking (or carrying light loads) for at least 10 minutes continuously? \n" +
+                    "क्या आपके काम में मध्यम-तीव्रता वाली गतिविधि शामिल है, जिससे सांस लेने या हृदय गति में थोड़ी वृद्धि होती है जैसे कि कम से कम 10 मिनट तक लगातार तेज चलना (या हल्का भार उठाना)?\n",
+            "In a typical week, on how many days do you do moderate-intensity activities as part of your work? \n" +
+                    "एक सामान्य सप्ताह में आप कितने दिन मध्यम कार्य करते हैं- आपके काम के हिस्से के रूप में गहन गतिविधियाँ?\n",
+            "How much time do you spend doing moderate-intensity activities at work on a typical day? \n" +
+                    "आप मध्यम तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं? एक सामान्य दिन पर काम पर?\n"
+        )))
+
+// P7
+        physQuestionModel.add(Ques(listOf(
+            "Do you walk or use a bicycle (pedal cycle) for at least 10 minutes continuously to get to and from places? \n" +
+                    "क्या आप किसी स्थान पर आने-जाने के लिए लगातार कम से कम 10 मिनट तक पैदल चलते हैं या साइकिल (पैडल साइकिल) का उपयोग करते हैं?\n",
+            "In a typical week, on how many days do you walk or bicycle for at least 10 minutes continuously to get to and from places? \n" +
+                    "एक सामान्य सप्ताह में आप कितने दिन पैदल चलते हैं या साइकिल चलाते हैं स्थानों पर आने-जाने के लिए लगातार कम से कम 10 मिनट?\n",
+            "How much time do you spend walking or bicycling for travel on a typical day? \n" +
+                    "आप यात्रा के लिए पैदल चलने या साइकिल चलाने में कितना समय व्यतीत करते हैं? किसी सामान्य दिन?\n"
+        )))
+
+// P10
+        physQuestionModel.add(Ques(listOf(
+            "Do you do any vigorous-intensity sports, fitness or recreational (leisure) activities that cause large increases in breathing or heart rate like (running or football) for at least 10 minutes continuously? \n" +
+                    "क्या आप कोई ज़ोरदार खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ करते हैं जो कम से कम 10 मिनट तक लगातार (दौड़ना या फुटबॉल) जैसी सांस लेने या हृदय गति में बड़ी वृद्धि का कारण बनती हैं?\n",
+            "In a typical week, on how many days do you do vigorous intensity sports, fitness or recreational (leisure) activities? \n" +
+                    "एक सामान्य सप्ताह में आप कितने दिन जोरदार व्यायाम करते हैं गहन खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n",
+            "How much time do you spend doing vigorous-intensity sports, fitness or recreational activities on a typical day? \n" +
+                    "आप ज़ोरदार तीव्रता वाले खेल करने में कितना समय बिताते हैं, किसी सामान्य दिन में फिटनेस या मनोरंजक गतिविधियाँ?\n"
+        )))
+
+// P13
+        physQuestionModel.add(Ques(listOf(
+            "Do you do any moderate-intensity sports, fitness or recreational (leisure) activities that cause a small increase in breathing or heart rate such as brisk walking, (cycling, swimming, volleyball) for at least 10 minutes continuously? \n" +
+                    "क्या आप कोई मध्यम-तीव्रता वाले खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ करते हैं जिससे सांस लेने या हृदय गति में थोड़ी वृद्धि होती है जैसे कि तेज चलना, (साइकिल चलाना, तैराकी, वॉलीबॉल) लगातार कम से कम 10 मिनट तक?\n",
+            "In a typical week, on how many days do you do moderate intensity sports, fitness or recreational (leisure) activities? \n" +
+                    "एक सामान्य सप्ताह में आप कितने दिन मध्यम कार्य करते हैं-गहन खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n",
+            "How much time do you spend doing moderate-intensity sports, fitness or recreational (leisure) activities on a typical day? \n" +
+                    "आप मध्यम तीव्रता वाले खेल करने में कितना समय व्यतीत करते हैं, किसी सामान्य दिन में फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n"
+        )))
+//        physQuestionModel.add(Ques(listOf("","",
+//            "How much time do you usually spend sitting or reclining on a  typical day?  \n" +
+//            "आप आमतौर पर सामान्य दिन में कितना समय बैठे या लेटे हुए बिताते हैं?\n"
+//        )))
+
 
         socQuestionModel.add(Ques(listOf("I experience a general sense of emptiness \n" +
                 "     मुझे खालीपन का सामान्य अहसास होता है \n")))
@@ -117,38 +197,39 @@ class QuizPageActivity : AppCompatActivity() {
         val latch = CountDownLatch(3)
         //checking if the answers exists on the database
         checkAnswer(0, object : CheckAnswerCallback {
-            override fun onResult(result: Boolean, answers: List<String>?) {
-                if (result && answers != null) {
-                    Ques.add(QuesModel("1", physQuestionModel, answers.toList()))
-                } else {
-                    Ques.add(QuesModel("1", physQuestionModel, emptyList()))
-                }
-//                Log.i("CHECK_RESPONSE","physical: ${answers.toString()}, ${result.toString()}")
+            override fun onResult(result: Boolean, answers: List<String>?, score: Int?) {
+                val finalAnswers = answers?.toList() ?: emptyList()  // Default to emptyList if answers is null
+                val finalScore = score ?: 0  // Default to 0 if score is null
+
+                Ques.add(QuesModel("1", physQuestionModel, finalAnswers, finalScore))
+                Log.i(tag, finalScore.toString())
                 latch.countDown()
             }
         })
+
         checkAnswer(1, object : CheckAnswerCallback {
-            override fun onResult(result: Boolean, answers: List<String>?) {
-                if (result && answers != null) {
-                    Ques.add(QuesModel("2", menQuestionModel, answers.toList()))
-                }else {
-                    Ques.add(QuesModel("2", menQuestionModel, emptyList()))
-                }
-//                Log.i("CHECK_RESPONSE","mental: ${answers.toString()}, ${result.toString()}")
+            override fun onResult(result: Boolean, answers: List<String>?, score: Int?) {
+                val finalAnswers = answers?.toList() ?: emptyList()  // Default to emptyList if answers is null
+                val finalScore = score ?: 0  // Default to 0 if score is null
+
+                Ques.add(QuesModel("2", menQuestionModel, finalAnswers, finalScore))
+                Log.i(tag, finalScore.toString())
                 latch.countDown()
             }
         })
+
         checkAnswer(2, object : CheckAnswerCallback {
-            override fun onResult(result: Boolean, answers: List<String>?) {
-                if (result && answers != null) {
-                    Ques.add(QuesModel("3", socQuestionModel, answers.toList()))
-                } else {
-                    Ques.add(QuesModel("3", socQuestionModel, emptyList()))
-                }
-//                Log.i("CHECK_RESPONSE","social: ${answers.toString()}, ${result.toString()}")
+            override fun onResult(result: Boolean, answers: List<String>?, score: Int?) {
+                val finalAnswers = answers?.toList() ?: emptyList()  // Default to emptyList if answers is null
+                val finalScore = score ?: 0  // Default to 0 if score is null
+
+                Ques.add(QuesModel("3", socQuestionModel, finalAnswers, finalScore))
+                Log.i(tag, finalScore.toString())
                 latch.countDown()
             }
         })
+
+
         Thread {
             try {
                 latch.await() // Wait until the countDownLatch reaches zero
@@ -160,7 +241,6 @@ class QuizPageActivity : AppCompatActivity() {
                 if (Ques.isNotEmpty()) {
                     if(currentUser != null){
                         val username = currentUser.email.toString().substringBefore("@")
-                        findViewById<TextView>(R.id.tvName).text = username
                         val user = User(username?: "Unknown User", currentUser.email ?: "No Email")
                         val userId = auth.currentUser?.uid ?: "unknown_user"
                         val allAnswers = intent.getStringArrayListExtra("all_answers")?.toList()
@@ -170,7 +250,6 @@ class QuizPageActivity : AppCompatActivity() {
                         var score = 0
                         if(allAnswers.isNotEmpty()){
                             ids.add(id)
-                            Log.i("CHECK_RESPONSE",allAnswers.toString())
                             if(id==1){
                                 score = calculatePhysicalScore(allAnswers)
                             }
@@ -255,8 +334,9 @@ class QuizPageActivity : AppCompatActivity() {
     }
 
     interface CheckAnswerCallback {
-        fun onResult(result: Boolean, answers: List<String>?)
+        fun onResult(result: Boolean, answers: List<String>?, score: Int?)
     }
+
 
     private fun checkAnswer(index: Int, callback: CheckAnswerCallback) {
         if (currentUser != null) {
@@ -272,24 +352,27 @@ class QuizPageActivity : AppCompatActivity() {
                             val data = document.data
                             val quizes = data["quizes"] as? List<Map<String, Any>>
                             if (quizes != null && quizes.size > index) {
-                                val answers = quizes[index]["answers"] as? List<String>
+                                val quiz = quizes[index]
+                                val answers = quiz["answers"] as? List<String>
+                                val score = (quiz["score"] as? Number)?.toInt() ?: 0
                                 if (answers != null && answers.isNotEmpty()) {
-                                    callback.onResult(true, answers)
+                                    callback.onResult(true, answers, score)
                                     return@addOnSuccessListener
                                 }
                             }
                         }
                     }
-                    callback.onResult(false, null)
+                    callback.onResult(false, null, null)
                 }
                 .addOnFailureListener { exception ->
                     Log.w("Firestore", "Error getting documents.", exception)
-                    callback.onResult(false, null)
+                    callback.onResult(false, null, null)
                 }
         } else {
-            callback.onResult(false, null)
+            callback.onResult(false, null, null)
         }
     }
+
 
 
     fun calculateSocialScore(answers: List<String>): Int {
@@ -342,6 +425,7 @@ class QuizPageActivity : AppCompatActivity() {
                     firestore.collection("questions2").document(documentId)
                         .set(newData) // Use set() to replace the whole document or update fields
                         .addOnSuccessListener {
+                            enableBtn()
                             Toast.makeText(baseContext, "Data Recorded successfully", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->

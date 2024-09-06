@@ -23,7 +23,6 @@ class SocioDemographic : AppCompatActivity() {
     private var lastName = ""
     private var gender = ""
     private var age = ""
-    private var incomeLevel = ""
     private var educationLevel = ""
     private var employmentStatus = ""
     private var height = ""
@@ -55,10 +54,9 @@ class SocioDemographic : AppCompatActivity() {
                 setContentView(R.layout.activity_income_data)
                 val btnNextNext = findViewById<Button>(R.id.btnNextNext)
                 btnNextNext.setOnClickListener {
-                    incomeLevel = findViewById<EditText>(R.id.etIncome).text.toString()
                     educationLevel = findViewById<Spinner>(R.id.etEducation).selectedItem.toString()
                     employmentStatus = findViewById<Spinner>(R.id.spinnerEmployment).selectedItem.toString()
-                    if (incomeLevel.isNotEmpty() && educationLevel.isNotEmpty() && employmentStatus.isNotEmpty()){
+                    if (educationLevel.isNotEmpty() && employmentStatus.isNotEmpty()){
                         setContentView(R.layout.activity_anthropometry)
                         val editTextHeight = findViewById<EditText>(R.id.etHeight)
                         val editTextWeight = findViewById<EditText>(R.id.etWeight)
@@ -110,7 +108,7 @@ class SocioDemographic : AppCompatActivity() {
 
     private fun storeData(){
 
-        val metricData = MetricsData(firstName, lastName, gender, age, incomeLevel, educationLevel, employmentStatus, height, weight, bmi, waist, smoking, alcohol, diabetes, hypertension, medication, sleep, diet)
+        val metricData = MetricsData(firstName, lastName, gender, age, educationLevel, employmentStatus, height, weight, bmi, waist, smoking, alcohol, diabetes, hypertension, medication, sleep, diet)
         val username = currentUser?.email.toString().substringBefore("@")
         val user = User(username ?: "Unknown User", currentUser?.email ?: "No Email")
         val userId = auth.currentUser?.uid ?: "unknown_user"

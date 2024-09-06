@@ -59,6 +59,9 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
                 finishQuiz()
                 return
             }
+            if(currentQuestionIndex == listQuestionModel.size-1){
+
+            }
 
             findViewById<TextView>(R.id.question_indicator_textview).text =
                 "Question ${currentQuestionIndex + 1}/${listQuestionModel.size}"
@@ -83,20 +86,26 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
         val clickedBtn = view as Button
         if(clickedBtn.id == R.id.btnYes){
             binding.apply {
-                btnYes.setBackgroundColor(getColor(R.color.options))
-                btnNo.setBackgroundColor(getColor(R.color.options))
+                btnYes.setBackgroundResource(R.drawable.rounded_button_default)
+                btnNo.setBackgroundResource(R.drawable.rounded_button_default)
+                btnYes.setTextColor(getColor(R.color.text))
+                btnNo.setTextColor(getColor(R.color.text))
             }
-            clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
+            clickedBtn.setBackgroundResource(R.drawable.rounded_button_selected)
+            clickedBtn.setTextColor(getColor(R.color.white))
             card2.visibility = View.VISIBLE
             card3.visibility = View.VISIBLE
 
         }
         if(clickedBtn.id == R.id.btnNo){
             binding.apply {
-                btnYes.setBackgroundColor(getColor(R.color.options))
-                btnNo.setBackgroundColor(getColor(R.color.options))
+                btnYes.setBackgroundResource(R.drawable.rounded_button_default)
+                btnNo.setBackgroundResource(R.drawable.rounded_button_default)
+                btnYes.setTextColor(getColor(R.color.text))
+                btnNo.setTextColor(getColor(R.color.text))
             }
-            clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
+            clickedBtn.setBackgroundResource(R.drawable.rounded_button_selected)
+            clickedBtn.setTextColor(getColor(R.color.white))
             card2.visibility = View.GONE
             card3.visibility = View.GONE
 
@@ -120,8 +129,10 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
                         currentQuestionIndex++
                         selectedAnswer = ""
                         binding.apply {
-                            btnYes.setBackgroundColor(getColor(R.color.options))
-                            btnNo.setBackgroundColor(getColor(R.color.options))
+                            btnYes.setBackgroundResource(R.drawable.rounded_button_default)
+                            btnNo.setBackgroundResource(R.drawable.rounded_button_default)
+                            btnYes.setTextColor(getColor(R.color.text))
+                            btnNo.setTextColor(getColor(R.color.text))
                         }
                         loadQuestions()
                     }
@@ -132,8 +143,10 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
                     currentQuestionIndex++
                     selectedAnswer = ""
                     binding.apply {
-                        btnYes.setBackgroundColor(getColor(R.color.options))
-                        btnNo.setBackgroundColor(getColor(R.color.options))
+                        btnYes.setBackgroundResource(R.drawable.rounded_button_default)
+                        btnNo.setBackgroundResource(R.drawable.rounded_button_default)
+                        btnYes.setTextColor(getColor(R.color.text))
+                        btnNo.setTextColor(getColor(R.color.text))
                     }
                     loadQuestions()
                 }
@@ -142,9 +155,12 @@ class PhysicalQues : AppCompatActivity(), View.OnClickListener {
         }
         else{
             selectedAnswer = clickedBtn.text.toString()
-            clickedBtn.setBackgroundColor(getColor(R.color.fphysical))
+            clickedBtn.setBackgroundResource(R.drawable.rounded_button_selected)
+            clickedBtn.setTextColor(getColor(R.color.white))
         }
     }
+
+
     private fun finishQuiz() {
         val intent = Intent(this, QuizPageActivity::class.java)
         intent.putStringArrayListExtra("all_answers", ArrayList(allAnswers.flatten()))
