@@ -31,7 +31,8 @@ data class Metrics(
                 "sleep" to metrics.sleep,
                 "diet" to metrics.diet,
 
-                "stepGoal" to metrics.stepGoal
+                "stepGoal" to metrics.stepGoal,
+                "steps" to metrics.steps,
                 )
         )
     }
@@ -55,6 +56,7 @@ data class MetricsData(
     val medication:String = "",
     val sleep:String = "",
     val diet:String = "",
-    val stepGoal:String = "-1"
+    val stepGoal:String = "-1",
+    val steps: List<Int> = List(7) { 0 },
 )
 

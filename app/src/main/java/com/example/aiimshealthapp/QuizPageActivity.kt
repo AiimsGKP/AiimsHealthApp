@@ -61,7 +61,7 @@ class QuizPageActivity : AppCompatActivity() {
 
     private fun enableBtn(){
         var count = 0
-        dashBtn.isEnabled = false  // Initially disable the button to indicate loading
+        dashBtn.isEnabled = false 
 
         if (currentUser != null) {
             db.collection("questions2")
@@ -75,24 +75,17 @@ class QuizPageActivity : AppCompatActivity() {
                         if (quizes != null) {
                             for (quiz in quizes) {
                                 val answers = quiz["answers"] as? List<String>
-
-                                // Check if the answers list is not null or empty
                                 if (!answers.isNullOrEmpty()) count += 1
-
-                                // If the count reaches 3, enable the button and break out of the loop early
                                 if (count == 3) {
                                     dashBtn.isEnabled = true
                                     break
                                 }
                             }
                         }
-
-                        // No need to process further documents if count == 3
                         if (count == 3) break
                     }
                 }
                 .addOnFailureListener {
-                    // Optionally handle errors, e.g., show a message to the user
                 }
         }
     }

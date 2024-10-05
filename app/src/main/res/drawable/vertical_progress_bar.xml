@@ -1,0 +1,55 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="5dp" />
+            <gradient
+                android:startColor="#00000000"
+                android:centerColor="#00000000"
+                android:endColor="#00000000"
+                android:angle="180" />
+        </shape>
+    </item>
+
+    <!-- Secondary Progress -->
+    <item android:id="@android:id/secondaryProgress">
+        <scale
+            android:scaleHeight="100%"
+            android:scaleWidth="100%">
+            <shape>
+                <corners
+                    android:topLeftRadius="5dp"
+                    android:topRightRadius="5dp"
+                    android:bottomLeftRadius="0dp"
+                    android:bottomRightRadius="0dp" />
+                <gradient
+                    android:startColor="@color/highlight_2"
+                    android:centerColor="@color/highlight_2"
+                    android:centerY="0.75"
+                    android:endColor="@color/highlight_2"
+                    android:angle="180" />
+            </shape>
+        </scale>
+    </item>
+
+    <!-- Progress -->
+    <item android:id="@android:id/progress">
+        <scale
+            android:scaleGravity="bottom"
+            android:scaleHeight="100%">
+            <shape>
+                <corners
+                    android:topLeftRadius="5dp"
+                    android:topRightRadius="5dp"
+                    android:bottomLeftRadius="0dp"
+                    android:bottomRightRadius="0dp" />
+                <gradient
+                    android:startColor="@color/highlight_2"
+                    android:centerColor="@color/highlight_2"
+                    android:centerY="0.75"
+                    android:endColor="@color/highlight_2"
+                    android:angle="180" />
+            </shape>
+        </scale>
+    </item>
+</layer-list>

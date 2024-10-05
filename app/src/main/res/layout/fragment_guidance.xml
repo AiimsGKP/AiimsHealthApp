@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GuidanceFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dashboard"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Guidance"
+                    android:textColor="@color/neutral_light_5"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Proper sitting posture at a computer."
+                android:textColor="@color/neutral_dark_1"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:textSize="18sp"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/computer_posture"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="•Adjust the chair height so your feet are flat on the floor and your knees are in line (or slightly lower) with your hips.
+                \n•	Sit up straight and keep your hips far back in the chair.
+                \n•	The back of the chair should be somewhat reclined at a 100- to 110-degree angle.
+                \n•	Ensure the keyboard is close and directly in front of you.
+                \n•	To help your neck stay relaxed and in a neutral position, the monitor should be directly in front of you, a few inches above eye level.
+                \n•	Sit at least 20 inches (or an arm’s length) away from the computer screen.
+                \n•	Relax the shoulders and be aware of them rising toward your ears or rounding forward throughout the workday.
+                \n•	Keep your feet flat on the floor or a footrest.
+                \n•	Do not cross your legs, knees or ankles.
+                \n•	Keep a small space between your knees and the seat of the chair.
+                \n•	Your knees should be at the same height as your hips or slightly lower.
+                \n•	Ankles should be in front of your knees."
+                android:textSize="16sp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -9,5 +9,6 @@
         <attr name="fullBackgroundColor" format="color" />
         <attr name="fullGradientStartColor" format="color" />
         <attr name="fullGradientEndColor" format="color" />
+        <attr name="progressBarWidth" format="dimension" />
     </declare-styleable>
 </resources>

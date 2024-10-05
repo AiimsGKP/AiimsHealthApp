@@ -17,4 +17,17 @@
         <item name="android:elevation">4dp</item>
         <item name="android:layout_margin">8dp</item>
     </style>
+
+    <style name="CardBackgroundStyle">
+        <item name="android:background">@drawable/rounded_corner</item>
+        <item name="android:backgroundTint">#96c6d1</item>
+        <item name="android:alpha">0.16</item>
+
+
+        <!-- Elevation to give a shadow effect -->
+<!--        <item name="android:elevation">4dp</item>-->
+
+        <!-- Layout margin for spacing around the view -->
+<!--        <item name="android:layout_margin">8dp</item>-->
+    </style>
 </resources>

@@ -1,0 +1,16 @@
+<!-- res/drawable/progress_bar_custom.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#00000000" /> <!-- Background color -->
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape android:shape="rectangle">
+                <corners android:radius="10dp"/>
+                <solid android:color="#FF6200EE"/>
+            </shape>
+        </scale>
+    </item>
+</layer-list>

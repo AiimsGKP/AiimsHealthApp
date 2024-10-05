@@ -10,18 +10,20 @@ class FullCircleProgressBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
+    private var progressBarWidth = 40f // Default width
+
     private val backgroundPaint = Paint().apply {
-        strokeWidth = 40f
+        strokeWidth = progressBarWidth
         style = Paint.Style.STROKE
         isAntiAlias = true
-        strokeCap = Paint.Cap.ROUND // Rounded edges for background
+        strokeCap = Paint.Cap.ROUND
     }
 
     private val foregroundPaint = Paint().apply {
-        strokeWidth = 40f
+        strokeWidth = progressBarWidth
         style = Paint.Style.STROKE
         isAntiAlias = true
-        strokeCap = Paint.Cap.ROUND // Rounded edges for foreground
+        strokeCap = Paint.Cap.ROUND
     }
 
     private var progress = 0
@@ -48,6 +50,14 @@ class FullCircleProgressBar @JvmOverloads constructor(
                     ContextCompat.getColor(context, android.R.color.holo_blue_dark)
                 )
                 gradientColors = intArrayOf(gradientStartColor, gradientEndColor)
+
+                // Fetch progressBarWidth from the custom attribute
+                progressBarWidth = getDimension(
+                    R.styleable.FullCircleProgressBar_progressBarWidth,
+                    40f
+                )
+                backgroundPaint.strokeWidth = progressBarWidth
+                foregroundPaint.strokeWidth = progressBarWidth
             } finally {
                 recycle()
             }

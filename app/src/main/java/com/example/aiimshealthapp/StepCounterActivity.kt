@@ -38,7 +38,6 @@ class StepCounterActivity : AppCompatActivity(), SensorEventListener {
         findViewById<Button>(R.id.btnSetGoal).setOnClickListener {
             showSetGoalDialog()
         }
-        // Start the StepCounterService to count steps in the background
         val intent = Intent(this, StepCounterService::class.java)
         startService(intent)
     }
