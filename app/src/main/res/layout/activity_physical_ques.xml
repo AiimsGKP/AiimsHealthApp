@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="30dp"
-    android:theme="@style/Theme.Material3.Light"
     tools:context=".PhysicalQues">
 
     <RelativeLayout
@@ -27,18 +26,16 @@
     </RelativeLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/question_progress_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:progress="40"
-        tools:progress="40" />
+        tools:progress = "40"
+        android:id="@+id/question_progress_indicator"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        style="@style/CardStyle"
         android:layout_marginVertical="8dp"
         android:elevation="4dp">
 
@@ -58,8 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="@color/fphysical"
+                    android:background="@drawable/rounded_corner_2"
                     android:gravity="center"
                     android:padding="8dp"
                     android:textColor="@color/white"
@@ -94,7 +90,7 @@
                 <LinearLayout
                     android:id="@+id/llsecond"
                     android:layout_marginTop="30dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -104,8 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
-                        android:background="@drawable/rounded_corner"
-                        android:backgroundTint="@color/fphysical"
+                        android:background="@drawable/rounded_corner_2"
                         android:gravity="center"
                         android:padding="8dp"
                         android:textColor="@color/white"
@@ -113,25 +108,22 @@
                         android:textStyle="bold"
                         tools:text="What is physical health" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/etDays"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDays"
-                            android:inputType="number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text"
-                            android:hint="@string/number_of_days" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="60dp"
+                        android:hint="Number of Days"
+                        android:inputType="number"
+                        android:background="@drawable/custom_input"
+                        android:layout_margin="5dp"
+                        android:paddingHorizontal="15dp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llthird"
                     android:layout_marginTop="30dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -141,8 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
-                        android:background="@drawable/rounded_corner"
-                        android:backgroundTint="@color/fphysical"
+                        android:background="@drawable/rounded_corner_2"
                         android:gravity="center"
                         android:padding="8dp"
                         android:textColor="@color/white"
@@ -156,33 +147,27 @@
                         android:orientation="horizontal"
                         android:gravity="center_horizontal">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/etHours"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content">
+                            android:layout_height="60dp"
+                            android:hint="Hours"
+                            android:inputType="number"
+                            android:background="@drawable/custom_input"
+                            android:layout_margin="5dp"
+                            android:paddingHorizontal="15dp"
+                            />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etHours"
-                                android:inputType="number"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text"
-                                android:hint="@string/hours" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/etMins"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etMins"
-                                android:inputType="number"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text"
-                                android:hint="@string/mins" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_height="60dp"
+                            android:hint="Mins"
+                            android:inputType="number"
+                            android:background="@drawable/custom_input"
+                            android:layout_margin="5dp"
+                            android:paddingHorizontal="15dp"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -191,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
-                    android:background = "@drawable/rounded_button_selected"
+                    android:background = "@drawable/rounded_corner_2"
                     android:text = "Next"
                     android:textColor="@color/white"
                     android:padding="12dp"
@@ -199,7 +184,9 @@
                     android:layout_gravity="end"
                     android:textSize="18sp"
                     android:id="@+id/next_btn"/>
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>

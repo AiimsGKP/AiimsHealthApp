@@ -2,85 +2,166 @@ package com.example.aiimshealthapp
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.*
-import android.hardware.*
-import android.os.*
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.aiimshealthapp.databinding.ActivityStepCounterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.util.Calendar
+import android.Manifest
+import android.animation.ObjectAnimator
+import androidx.work.Data
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import java.util.Timer
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 
 class StepCounterActivity : AppCompatActivity(), SensorEventListener {
-    private val db = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
-    private val currentUser = auth.currentUser
-    private var sensorManager: SensorManager? = null
-    private var running = false
-    private var totalSteps = 0f
-    private var previousTotalSteps = 0f
-    private lateinit var tv_stepsTaken: TextView
+
+    private lateinit var binding: ActivityStepCounterBinding
+    private lateinit var sensorManager: SensorManager
+    private var stepCounterSensor: Sensor? = null
+    private var isSensorPresent = false
+    private var stepCount = 0
+    private var previousStepCount = 0
+    private var steps: List<Int> = emptyList()
+    private lateinit var sharedPreferences: SharedPreferences
+    private var stepGoal: String = "0"
     private val tag = "CHECK_RESPONSE"
-    private lateinit var progressBar : FullCircleProgressBar
-    private var stepGoal = 6000
+    private val db = FirebaseFirestore.getInstance()
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private val ACTIVITY_RECOGNITION_REQUEST_CODE = 100
+    private val currentDate = LocalDate.now()
+    private val previousDate = currentDate.minusDays(1)
+    private val user = currentUser?.let {
+        User(it.displayName ?: "Unknown", it.email ?: "unknown@example.com")
+    } ?: User("Unknown", "unknown@example.com")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_step_counter)
-        tv_stepsTaken = findViewById(R.id.stepCounterTextView)
-        progressBar = findViewById<FullCircleProgressBar>(R.id.progressCircular)
+        binding = ActivityStepCounterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        getGoal()
-        loadData()
-        findViewById<Button>(R.id.btnSetGoal).setOnClickListener {
-            showSetGoalDialog()
+        // Check if the Activity Recognition permission is granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // If not, request the permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+                ACTIVITY_RECOGNITION_REQUEST_CODE
+            )
+        } else {
+            // If permission is already granted, initialize step counter
+            initializeStepCounter()
         }
-        val intent = Intent(this, StepCounterService::class.java)
-        startService(intent)
-    }
 
-    private fun getGoal() {
-        if(currentUser != null){
-            db.collection("metrics")
-                .whereEqualTo("user.email", currentUser.email)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (documents != null) {
-                        for (document in documents) {
-                            val data = document.data
-                            val metrics = data["metrics"] as? Map<String, Any>
-                            var goal = metrics?.get("stepGoal") as? String
-                            val age = metrics?.get("age") as? String
-                            val name = metrics?.get("firstName") as? String
-
-                            findViewById<TextView>(R.id.username).text = name.toString()
-                            if (age != null && goal.toString() == "-1") {
-                                if(age.toInt() >= 5 && age.toInt() <= 17){
-                                    goal = "6000"
-                                }
-                                else if(age.toInt() >= 18 && age.toInt()<=64){
-                                    goal = "3000"
-                                }
-                                else if(age.toInt() >= 65){
-                                    goal = "3000"
-                                }
-                                findViewById<TextView>(R.id.tvStepGoal).text = "${goal.toString()} Steps"
-                            }
-                            if (goal != null) {
-                                progressBar.setMax(goal.toInt())
-                                progressBar.setProgress(totalSteps.toInt() - previousTotalSteps.toInt())
-                            }
-                        }
-                    }
-                }
+        if (!sharedPreferences.contains(currentDate.toString())){
+            if(sharedPreferences.contains(previousDate.toString())) {
+                val previousDaySteps = sharedPreferences.getInt(previousDate.toString(), 0)
+                Log.i(tag, "previous day steps:"+previousDaySteps.toString())
+                executeMidnightTask(previousDaySteps)
+            }
+        }
+        binding.stepCounterTextView.setOnClickListener{
+//            executeMidnightTask(0)
+        }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
         }
     }
 
-    private fun setGoal(goal:String){
-        if(currentUser != null){
+    // Callback for handling the permission result
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == ACTIVITY_RECOGNITION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initializeStepCounter()
+            } else {
+                onBackPressed()  // Go back to the previous page
+            }
+        }
+    }
+
+    private fun initializeStepCounter() {
+        // Initialize Sensor Manager and Shared Preferences
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sharedPreferences = getSharedPreferences("StepsPrefs", Context.MODE_PRIVATE)
+        Log.i(tag, sharedPreferences.getInt(currentDate.toString(), 0).toString())
+        // Check for step counter sensor
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+            stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+            isSensorPresent = true
+
+            // Get previously stored initial step count
+            previousStepCount = sharedPreferences.getInt("previousStepCount", -1)
+        } else {
+            binding.stepCounterTextView.text = "0"
+            isSensorPresent = false
+        }
+
+        binding.username.text = user.username ?: ""
+        setDays()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isSensorPresent) {
+            sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isSensorPresent) {
+            sensorManager.unregisterListener(this)
+        }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER) {
+            val totalSteps = event.values[0].toInt()
+            sharedPreferences.edit().putInt("totalSteps", totalSteps).apply()
+            Log.i(tag, "___" + totalSteps)
+            // If this is the first time, store the initial step count
+            if (previousStepCount == -1) {
+                previousStepCount = totalSteps
+                sharedPreferences.edit().putInt("previousStepCount", previousStepCount).apply()
+            }
+            // Calculate the steps taken today
+            stepCount = totalSteps - previousStepCount
+            sharedPreferences.edit().putInt(currentDate.toString(), stepCount).apply()
+            updateSteps(stepCount)
+        }
+    }
+
+    private fun executeMidnightTask(previousSteps:Int) {
+        if (currentUser != null) {
             db.collection("metrics")
                 .whereEqualTo("user.email", currentUser.email)
                 .get()
@@ -90,9 +171,19 @@ class StepCounterActivity : AppCompatActivity(), SensorEventListener {
                             val documentId = document.id
                             val data = document.data
                             val metrics = (data["metrics"] as? Map<*, *>)?.toMutableMap()
-                            metrics?.set("stepGoal", goal) // Example of updating weight
+                            steps = (metrics?.get("steps") as? List<Int>) ?: listOf()
+                            val shiftedList = MutableList<Int?>(steps.size) { 0 }
+                            for (i in 1 until steps.size) {
+                                val date = currentDate.minusDays(i.toLong()-1)
+                                shiftedList[steps.size - i] = sharedPreferences.getInt(date.toString(), 0)
+                                Log.i(tag, date.toString() +"  " + sharedPreferences.getInt(date.toString(), 0))
+                            }
 
-                            // Update the document with the new metrics map
+                            steps = shiftedList.filterNotNull()
+                            Log.i(tag, steps.toString())
+                            metrics?.set("steps", steps)
+                            previousStepCount = sharedPreferences.getInt("totalSteps", 0)
+                            sharedPreferences.edit().putInt("previousStepCount", previousStepCount).apply()
                             val updates = mapOf("metrics" to metrics)
                             db.collection("metrics").document(documentId)
                                 .update(updates)
@@ -102,127 +193,107 @@ class StepCounterActivity : AppCompatActivity(), SensorEventListener {
                                 .addOnFailureListener { e ->
                                     Log.w(tag, "Error updating metrics", e)
                                 }
+                            updateSteps(0)
                         }
                     }
                 }
         }
     }
 
-    private fun showSetGoalDialog() {
-        // Inflate the custom dialog layout
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_set_goal, null)
-        val editTextGoal = dialogView.findViewById<EditText>(R.id.editTextGoal)
+    private fun updateSteps(stepCount: Int) {
+        // Update UI
+        binding.stepCounterTextView.text = stepCount.toString()
+        if (currentUser != null) {
+            db.collection("metrics")
+                .whereEqualTo("user.email", currentUser.email)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (documents != null) {
+                        for (document in documents) {
+                            val data = document.data
+                            val metrics = data["metrics"] as? Map<String, Any>
+                            val weight = metrics?.get("weight") as? String
+                            val goal = metrics?.get("stepGoal") as? String
 
-        // Build the dialog
-        AlertDialog.Builder(this)
-            .setTitle("Set Step Goal")
-            .setView(dialogView)
-            .setPositiveButton("Set") { dialog, _ ->
-                val goalString = editTextGoal.text.toString()
-                val goal = goalString.toIntOrNull() ?: stepGoal // Use current stepGoal if input is invalid
-                if (goal > 0) {
-                    stepGoal = goal
-                    progressBar.setMax(stepGoal)
-                    findViewById<TextView>(R.id.tvStepGoal).text = "${stepGoal} Steps"
-                    setGoal(stepGoal.toString())
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        if (stepSensor == null) {
-            Toast.makeText(this, "No sensor detected on this device", Toast.LENGTH_SHORT).show()
-        } else {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        }
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (running) {
-            totalSteps = event!!.values[0]
-            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
-            tv_stepsTaken.text = currentSteps.toString()
-            progressBar.setProgress(currentSteps)
-            if(currentUser!=null) {
-                db.collection("metrics")
-                    .whereEqualTo("user.email", currentUser.email)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        if (documents != null) {
-                            for(document in documents){
-                                val data = document.data
-                                val metrics = data["metrics"] as? Map<String, Any>
-                                val weight = metrics?.get("weight") as? String
-                                if (weight != null) {
-                                    val calories = calculateCaloriesBurnt(currentSteps, weight.toFloat())
-                                    findViewById<TextView>(R.id.tvCalories).text = "${calories.toInt().toString()}Cal"
-                                }
+                            steps = (metrics?.get("steps") as? List<Int>) ?: emptyList()
+                            stepGoal = if (goal == "-1") {
+                                determineGoal(metrics)
+                            } else {
+                                goal.toString()
                             }
-
+                            binding.tvStepGoal.text = stepGoal
+                            sharedPreferences.edit().putInt("stepGoal", stepGoal.toInt()).apply()
+                            if ( weight != null && weight.isNotEmpty()) {
+                                val calories = calculateCaloriesBurnt(stepCount, weight.toFloat())
+                                sharedPreferences.edit().putInt("calories", calories.toInt()).apply()
+                                binding.tvCalories.text = "${calories.toInt()}"
+                            }
+                            binding.progressCircular.setMax(stepGoal.toInt())
+                            binding.progressCircular.setProgress(stepCount)
+                            updateProgressBars()
                         }
                     }
-            }
+                }
+                .addOnFailureListener { e ->
+                    Log.w(tag, "Error fetching metrics", e)
+                }
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // No need to implement this for step counting
+        // No need to handle accuracy changes
     }
 
-    private fun saveData() {
-        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putFloat("key1", previousTotalSteps)
-        editor.apply()
-    }
-
-    private fun loadData() {
-        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-        val savedNumber = sharedPreferences.getFloat("key1", 0f)
-        Log.d(tag, "$savedNumber")
-        previousTotalSteps = savedNumber
-
-
-    }
-
-    fun calculateCaloriesBurnt(stepCount: Int, weightKg: Float): Float {
-        // Average calories burnt per step (varies by weight and intensity)
-        val caloriesPerStep = 0.04f
-
-        // Calculate total calories burnt
-        val totalCaloriesBurnt = stepCount * caloriesPerStep * (weightKg / 70f) // Assuming 70kg is the average weight
-
-        return totalCaloriesBurnt
-    }
-
-    private fun setupDailyReset() {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, ResetStepsReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
+    private fun setDays() {
+        val today = LocalDate.now().dayOfWeek
+        val daysOfWeek = DayOfWeek.values()
+        val daysList = (1..7).map { daysOfWeek[(today.ordinal + it) % daysOfWeek.size].toString()[0].toString() }
+        listOf(
+            binding.day1,
+            binding.day2,
+            binding.day3,
+            binding.day4,
+            binding.day5,
+            binding.day6,
+            binding.day7
+        ).forEachIndexed { index, textView ->
+            textView.text = daysList[index]
         }
+    }
 
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
+    private fun updateProgressBars() {
+        val daysProgress = listOf(
+            binding.progressBar1,
+            binding.progressBar2,
+            binding.progressBar3,
+            binding.progressBar4,
+            binding.progressBar5,
+            binding.progressBar6
         )
+        for ((item1, item2) in steps.zip(daysProgress)) {
+            item2.max = stepGoal.toInt()
+            item2.progress = item1
+            val progressAnimator = ObjectAnimator.ofInt(item2, "progress", 0, item1)
+            progressAnimator.duration = 1000 // Set duration in milliseconds (2 seconds)
+            progressAnimator.start()
+        }
+        binding.progressBar7.max = stepGoal.toInt()
+        binding.progressBar7.progress = stepCount
+    }
+
+    private fun calculateCaloriesBurnt(stepCount: Int, weightKg: Float): Float {
+        val caloriesPerStep = 0.04f
+        return stepCount * caloriesPerStep * (weightKg / 70f)
+    }
+
+    private fun determineGoal(metrics: Map<String, Any>?): String {
+        val age = (metrics?.get("age") as? String)?.toIntOrNull()
+        return when {
+            age in 5..17 -> "6000"
+            age in 18..64 -> "3000"
+            age != null && age >= 65 -> "3000"
+            else -> "-1"
+        }
     }
 
 

@@ -1,10 +1,12 @@
 package com.example.aiimshealthapp
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.example.aiimshealthapp.R
 
 class FullCircleProgressBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -103,10 +105,20 @@ class FullCircleProgressBar @JvmOverloads constructor(
         )
     }
 
-    // Function to set progress
-    fun setProgress(progress: Int) {
-        this.progress = progress.coerceIn(0, max) // Ensure progress is within bounds
-        invalidate()
+    // Function to set progress with animation
+    fun setProgress(targetProgress: Int, duration: Long = 1000) {
+        // Ensure progress is within bounds
+        val clampedProgress = targetProgress.coerceIn(0, max)
+
+        // Create ValueAnimator for smooth transition
+        ValueAnimator.ofInt(progress, clampedProgress).apply {
+            this.duration = duration
+            addUpdateListener { animator ->
+                progress = animator.animatedValue as Int
+                invalidate() // Redraw the view for each updated value
+            }
+            start() // Start the animation
+        }
     }
 
     // Function to set max value

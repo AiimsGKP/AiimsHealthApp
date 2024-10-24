@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -70,6 +71,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.play.services.wearable)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.firebase.perf.ktx)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,6 +95,18 @@ dependencies {
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
     implementation ("com.google.android.material:material:1.6.1")
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
-
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation ("com.google.zxing:core:3.3.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation ("androidx.camera:camera-core:1.0.2")
+    implementation ("androidx.camera:camera-camera2:1.0.2")
+    implementation ("androidx.camera:camera-lifecycle:1.0.2")
+    implementation ("androidx.camera:camera-view:1.0.0-alpha27")
+    implementation ("androidx.camera:camera-extensions:1.0.0-alpha27")
+    implementation ("com.google.guava:guava:31.0.1-android")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    implementation ("org.osmdroid:osmdroid-android:6.1.14")
 
 }

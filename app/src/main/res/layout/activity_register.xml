@@ -1,98 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context=".LoginWithEmail">
-    <androidx.cardview.widget.CardView
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    >
+
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        style="@style/CardStyle">
-        <LinearLayout
+        android:layout_height="match_parent">
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
-            android:paddingHorizontal="10dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:text="@string/login_register"
-                android:textSize="30sp"
-                android:layout_marginBottom="20dp"
-                android:textStyle="bold" />
+            android:layout_height="300dp"
+            android:src="@drawable/sample_image"
+            android:scaleType="centerCrop"
+            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Or"
-                android:gravity="center"
-                android:textSize="20sp"
-                />
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="10dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phoneNumber"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/phone_number" />
+                    android:gravity="center"
+                    android:text="Welcome"
+                    android:textSize="30sp"
+                    android:textColor="@color/neutral_dark_1"
+                    android:layout_margin="10dp"
+                    android:textStyle="bold" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="Email"
+                    android:inputType="text"
+                    android:background="@drawable/custom_input"
+                    android:layout_margin="5dp"
+                    android:paddingHorizontal="15dp"
+                    />
+                <LinearLayout
+                    android:id="@+id/passwordContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/custom_input"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Password"
+                        android:paddingHorizontal="15dp"
+                        android:background="@drawable/custom_input"
+                        android:backgroundTint="@android:color/transparent"
+                        android:inputType="textPassword"
+                        />
+
+                    <ImageView
+                        android:id="@+id/showPasswordIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_visibility_off"
+                        android:contentDescription="Show Password" />
 
 
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="59dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/continue_btn" />
-        </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/confirmPasswordContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/custom_input"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
 
-    </androidx.cardview.widget.CardView>
-    <Button
-        android:id="@+id/loginUsername"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Login with Username"/>
+                    <EditText
+                        android:id="@+id/confirmPassword"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Confirm Password"
+                        android:paddingHorizontal="15dp"
+                        android:background="@drawable/custom_input"
+                        android:backgroundTint="@android:color/transparent"
+                        android:inputType="textPassword"
+                        />
+
+                    <ImageView
+                        android:id="@+id/showConfirmPasswordIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_visibility_off"
+                        android:contentDescription="Show Password" />
 
 
-</LinearLayout>
+                </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+                <Button
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="@color/highlight_2"
+                    android:textColor="@color/neutral_light_5"
+                    android:textStyle="bold"
+                    android:text="@string/continue_btn" />
+
+                <TextView
+                    android:id="@+id/loginUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Already a user? Login"
+                    android:textColor="@color/highlight_2"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

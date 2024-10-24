@@ -2,10 +2,13 @@ package com.example.aiimshealthapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +20,7 @@ class LoginWithUsername : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +36,41 @@ class LoginWithUsername : AppCompatActivity() {
 
 
         registerButton.setOnClickListener {
-            val username = usernameEditText.text.toString().trimEnd()
-            val email = "$username@yourapp.com" // Create a pseudo email
+            var username = usernameEditText.text.toString().trimEnd()
+            var email = "$username@yourapp.com"
             val password = passwordEditText.text.toString().trimEnd()
-            checkAndRegisterOrLogin(username, email, password)
+            if (username.contains('@')) {
+                email = username // Store in email if it contains '@'
+                username = email.substringBefore('@')
+            }
+            if( username.isEmpty()){
+                usernameEditText.error = "Username is required"
+            }
+            if( password.isEmpty()){
+                passwordEditText.error = "Password is required"
+            }
+
+            if(username.isNotEmpty() && password.isNotEmpty())checkAndRegisterOrLogin(username, email, password)
         }
 
         loginEmail.setOnClickListener {
             val intent = Intent(this, LoginWithEmail::class.java)
             startActivity(intent)
+        }
+        val showPasswordIcon = findViewById<ImageView>(R.id.showPasswordIcon)
+
+        showPasswordIcon.setOnClickListener {
+            // Toggle password visibility
+            if (isPasswordVisible) {
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                showPasswordIcon.setImageResource(R.drawable.ic_visibility_off) // Update icon to "hidden"
+            } else {
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                showPasswordIcon.setImageResource(R.drawable.ic_visibility) // Update icon to "visible"
+            }
+            isPasswordVisible = !isPasswordVisible
+            // Move cursor to the end of the text
+            passwordEditText.setSelection(passwordEditText.text.length)
         }
 
     }
@@ -51,7 +81,10 @@ class LoginWithUsername : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 if (document.isEmpty) {
-                    registerUser(username, email, password)
+                    Toast.makeText(baseContext, "Invalid User",
+                        Toast.LENGTH_SHORT).show()
+                    setInProgress(false)
+//                    registerUser(username, email, password)
                 } else {
                     loginUser(email, password)
 
@@ -108,7 +141,7 @@ class LoginWithUsername : AppCompatActivity() {
                                         Toast.makeText(baseContext, getString(R.string.registration_successful),
                                             Toast.LENGTH_SHORT).show()
                                         // Navigate to login activity or next activity
-                                        val intent = Intent(this, SocioDemographic::class.java)
+                                        val intent = Intent(this, OnboardingActivity::class.java)
                                         startActivity(intent)
                                     }
                                     .addOnFailureListener {

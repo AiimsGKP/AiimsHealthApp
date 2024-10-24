@@ -3,84 +3,186 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="end"
-    tools:context=".HydrationReminderActivity"
-    android:padding="10dp">
-
-    <Button
-        android:id="@+id/addTimer"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/plus"
-        android:backgroundTint="@color/cardview_dark_background"
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    tools:context=".SampleActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp"
-            android:background="@color/cardview_dark_background"
-            >
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.245">
+
+            <View
+                android:id="@+id/backBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_back"
+                android:backgroundTint="@color/neutral_light_5" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hydration_reminder"
-                android:textSize="30sp"
-                android:textColor="@color/white"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:checked="true"
-                android:id="@+id/hydrationReminder"
+                android:id="@+id/textView11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="30sp"/>
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                android:text="Hydration Reminder"
+                android:textColor="@color/neutral_light_5"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/addTimer"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/plus"
+                android:backgroundTint="@color/highlight_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.983"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.194" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginVertical="50dp"
-        android:layout_gravity="center"/>
-    <ScrollView
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.801">
+            <!--            <View-->
+            <!--                android:id="@+id/view2"-->
+            <!--                style="@style/CardBackgroundStyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="90dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:clipToOutline="true"
+                android:background="@drawable/rounded_corner_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/hydrationText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
+                    android:layout_weight="1"
+                    android:text="On"
+                    android:textColor="@color/neutral_light_5"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
+
+                <Switch
+                    android:id="@+id/hydrationReminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:paddingHorizontal="10dp"
+                    android:track="@drawable/bg_track"
+                    android:thumb="@drawable/thumb"
+                    android:scaleY="0.75"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:scrollbars="none">
-
-        <RelativeLayout
-            android:id="@+id/main_layout"
-            android:padding="5dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:paddingBottom="100dp"
+            android:clipToPadding="false"/>
+        <LinearLayout
+            android:id="@+id/emptyTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/onImage"
+                android:layout_width="50dp"
+                android:layout_height="70dp"/>
 
-    </ScrollView>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set a timer."
+                android:padding="10dp"
+                android:textColor="@color/neutral_light_1"
+                android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/disabledTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="100dp">
+            <ImageView
+                android:id="@+id/offImage"
+                android:layout_width="50dp"
+                android:layout_height="70dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hydration reminder is off."
+                android:textColor="@color/neutral_light_1"
+                android:padding="10dp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

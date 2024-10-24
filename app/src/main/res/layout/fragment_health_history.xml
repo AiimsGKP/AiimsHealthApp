@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_back"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="Your Health History Matters"
+            android:textColor="@color/neutral_dark_1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backBtn" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="Tell us about your lifestyle and medical history to help us better understand your health needs and offer personalized advice."
+            android:textColor="@color/neutral_dark_2"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        <LinearLayout
+            android:id="@id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/do_you_consume_any_form_of_tobacco_items"
+                    android:textSize="18sp"
+                    android:textColor="@color/neutral_dark_1"
+                    android:gravity="center_vertical" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="18sp"
+                    android:textColor="@color/red"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/radioTobacco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="10dp">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="No" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/do_you_consume_alcohol"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:gravity="center_vertical" />
+
+            <RadioGroup
+                android:id="@+id/radioAlcohol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="10dp">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="No" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/history_of_diabetes"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:gravity="center_vertical" />
+
+            <RadioGroup
+                android:id="@+id/radioDiabetes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="10dp">
+
+                <RadioButton
+                    android:id="@+id/yesDiabetes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:id="@+id/noDiabetes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="No" />
+            </RadioGroup>
+            <LinearLayout
+                android:id="@+id/lldiabetes"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@color/neutral_dark_1"
+                    android:text="@string/if_yes_enter_number_of_years_of_disease"
+                    android:gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/etDiabetes"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/custom_input"
+                    android:inputType="number"
+                    android:paddingHorizontal="15dp"
+                    android:textColorHint="@color/neutral_light_1"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/history_of_hypertension"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:gravity="center_vertical" />
+
+            <RadioGroup
+                android:id="@+id/radioHypertension"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="10dp">
+
+                <RadioButton
+                    android:id="@+id/yesHypertension"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:id="@+id/noHypertension"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="No" />
+            </RadioGroup>
+            <LinearLayout
+                android:id="@+id/llhypertension"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@color/neutral_dark_1"
+                    android:text="@string/if_yes_enter_number_of_years_of_disease"
+                    android:gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/etHypertension"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/custom_input"
+                    android:inputType="number"
+                    android:paddingHorizontal="15dp"
+                    android:textColorHint="@color/neutral_light_1"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp"
+                android:text="@string/type_of_medication" />
+
+            <EditText
+                android:id="@+id/etMedication"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/custom_input"
+                android:inputType="text"
+                android:paddingHorizontal="15dp"
+                android:textColorHint="@color/neutral_light_1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp"
+                android:text="@string/hours_of_sleep" />
+
+            <EditText
+                android:id="@+id/etSleep"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/custom_input"
+                android:inputType="number"
+                android:paddingHorizontal="15dp"
+                android:textColorHint="@color/neutral_light_1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/not_selected"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:text="@string/dietary_habit"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/neutral_dark_1"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/vegetarian"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:background="@drawable/rounded_corner"
+                    android:text="Vegetarian"
+                    android:textAllCaps="false"
+                    android:textColor="@color/highlight_2" />
+
+                <Button
+                    android:id="@+id/nonvegetarian"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:background="@drawable/not_selected"
+                    android:text="Non Vegetarian"
+                    android:textAllCaps="false"
+                    android:textColor="@color/neutral_light_1" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_corner_2"
+            android:text="@string/next"
+            android:textColor="@color/neutral_light_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

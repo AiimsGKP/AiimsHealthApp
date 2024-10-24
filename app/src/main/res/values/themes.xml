@@ -19,7 +19,7 @@
     </style>
 
     <style name="CardBackgroundStyle">
-        <item name="android:background">@drawable/rounded_corner</item>
+        <item name="android:background">@drawable/card_background</item>
         <item name="android:backgroundTint">#96c6d1</item>
         <item name="android:alpha">0.16</item>
 

@@ -3,54 +3,538 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExploreFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.ExploreFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:scrollbars="none">
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/main_layout"-->
-<!--            android:padding="5dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-<!--        </RelativeLayout>-->
-<LinearLayout
-    android:id="@+id/btnSetGoal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/btnSetGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvCalories"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvStepGoal"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/username"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stepCounterTextView"/>
-    <com.example.aiimshealthapp.FullCircleProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressCircular"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dashboard"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextGoal"/>
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Explore"
+                    android:textColor="@color/neutral_light_5"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Physical"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:padding="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/StepTracker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_step"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Step Tracker"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/PhysicalExercises"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_physical"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Physical Exercises"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/Yoga"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_image"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Yoga"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/HydrationReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_water"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hydration Reminder"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/BMICalculator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_image"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BMI Calculator"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/PostureExercises"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_posture"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Posture Exercises"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mental"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:padding="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/RelaxingSounds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_sound"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Relaxing Sounds"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/Meditation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_image"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Meditation"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/BreathingExercises"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_image"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Breathing Exercises"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Social"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:padding="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/CommunicationReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_communication"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Communication Reminder"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Miscellaneous"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/neutral_dark_1"
+                android:padding="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/FoPLLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/ic_scanner"
+                    android:backgroundTint="@color/highlight_2" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Food Label Scanner"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/HealthEducation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_healtheducation"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Health Education"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/MedicationReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_medication"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medication Reminder"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/HealthCheckupReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_checkup"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Health Checkup Reminder"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/HealthFacilityLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_map"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Health Facility Location"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+            <LinearLayout
+                android:id="@+id/ScreenTimeMonitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:background="?attr/selectableItemBackground">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_monitor"
+                    android:backgroundTint="@color/highlight_2"
+                    android:layout_margin="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Screen Time Monitor"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/neutral_light_2"
+                android:layout_marginHorizontal="20dp"/>
+
+        </LinearLayout>
     </ScrollView>
-
 </FrameLayout>

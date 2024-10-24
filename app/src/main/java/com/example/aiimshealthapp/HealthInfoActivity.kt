@@ -1,8 +1,11 @@
 package com.example.aiimshealthapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -12,49 +15,149 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.example.aiimshealthapp.databinding.ActivityHealthInfoBinding
+import com.example.aiimshealthapp.models.HealthEducationModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-class HealthInfoActivity : AppCompatActivity(), View.OnClickListener {
-
+class HealthInfoActivity : AppCompatActivity(){
+    lateinit var health_data: List<Map<String, Any>>
     lateinit var binding:ActivityHealthInfoBinding
+    private val db = FirebaseFirestore.getInstance()
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private val tag = "CHECK_RESPONSE"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityHealthInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.let {
-                it.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        binding.ncd.setOnClickListener{
+            if(binding.ncdData.isVisible){
+                binding.ncdData.visibility = View.GONE
+                binding.expandNCD.setImageResource(R.drawable.ic_down_arrow)
             }
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            else{
+                binding.ncdData.visibility = View.VISIBLE
+                binding.expandNCD.setImageResource(R.drawable.ic_up_arrow)
+            }
         }
-        binding.apply {
-            btn1.setOnClickListener(this@HealthInfoActivity)
-            btn2.setOnClickListener(this@HealthInfoActivity)
-            btn3.setOnClickListener(this@HealthInfoActivity)
-            btn4.setOnClickListener(this@HealthInfoActivity)
-            btn5.setOnClickListener(this@HealthInfoActivity)
-            btn6.setOnClickListener(this@HealthInfoActivity)
-            btn7.setOnClickListener(this@HealthInfoActivity)
-            btn8.setOnClickListener(this@HealthInfoActivity)
-            btn9.setOnClickListener(this@HealthInfoActivity)
-            btn10.setOnClickListener(this@HealthInfoActivity)
-            btn11.setOnClickListener(this@HealthInfoActivity)
-            btn12.setOnClickListener(this@HealthInfoActivity)
+        val clickListener = View.OnClickListener { view ->
+            // Get the button's id and send the appropriate data
+            when (view.id) {
+                R.id.diabetes -> sendDataToNextActivity(findItemByName(health_data, "Diabetes"))
+                R.id.hypertension -> sendDataToNextActivity(findItemByName(health_data, "Hypertension"))
+                R.id.cancer -> sendDataToNextActivity(findItemByName(health_data, "Cancer"))
+                R.id.copd -> sendDataToNextActivity(findItemByName(health_data, "COPD"))
+            }
         }
 
+        binding.diabetes.setOnClickListener(clickListener)
+        binding.hypertension.setOnClickListener(clickListener)
+        binding.cancer.setOnClickListener(clickListener)
+        binding.copd.setOnClickListener(clickListener)
+
+        loadData(this, object : DataCallback {
+            override fun onDataLoaded(data: List<Map<String, Any>>?) {
+                // Handle the returned data
+                if (data != null) {
+                    health_data = data
+                } else {
+                    Log.i(tag,"No data")
+                }
+            }
+        })
 
     }
 
-    override fun onClick(view: View?) {
-        val clickedBtn = view as Button
+    fun findItemByName(data: List<Map<String, Any>>, nameToFind: String): Map<String, Any>? {
+        for (item in data) {
+            if (item["name"] == nameToFind) {
+                return item
+            }
+        }
+        return null
+    }
+
+
+    interface DataCallback {
+        fun onDataLoaded(data: List<Map<String, Any>>?)
+    }
+
+    private fun loadData(context: Context, callback: DataCallback) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("HealthPrefs", Context.MODE_PRIVATE)
+        val gson = Gson()
+
+        // Check SharedPreferences for existing data
+        val jsonData = sharedPreferences.getString("health_education_facts", null)
+        if (jsonData != null && jsonData.isNotEmpty()) {
+            // Data exists in SharedPreferences, try to parse it
+            val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+            val dataFromPrefs: List<Map<String, Any>>? = gson.fromJson(jsonData, type)
+            Log.i(tag, dataFromPrefs.toString())
+            if (dataFromPrefs != null) {
+                // Pass the data back via callback
+                callback.onDataLoaded(dataFromPrefs)
+            } else {
+                // Handle case where fromJson returned null due to malformed data
+                callback.onDataLoaded(null)
+            }
+
+        } else {
+            // If data doesn't exist in SharedPreferences, fetch from Firestore
+            if (currentUser != null) {
+                db.collection("health_education")
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if (documents != null) {
+                            var data: List<Map<String, Any>>? = null
+                            for (document in documents) {
+                                data = document.data["diseases"] as? List<Map<String, Any>>
+                                if (data != null) {
+                                    // Store the fetched data in SharedPreferences
+                                    val jsonDataToStore = gson.toJson(data)
+                                    val editor = sharedPreferences.edit()
+                                    editor.putString("health_education_facts", jsonDataToStore)
+                                    editor.apply()
+                                }
+                            }
+                            // Pass the fetched data back via callback
+                            callback.onDataLoaded(data)
+                        } else {
+                            // If no documents found, return null or empty data
+                            callback.onDataLoaded(null)
+                        }
+                    }
+                    .addOnFailureListener {
+                        // Handle failure, e.g., return null or handle the error
+                        callback.onDataLoaded(null)
+                    }
+            } else {
+                // If no current user, return null
+                callback.onDataLoaded(null)
+            }
+        }
+    }
+
+    private fun sendDataToNextActivity(map: Map<String, Any>?) {
         val intent = Intent(this, HealthInfoPageActivity::class.java)
-        intent.putExtra("topic", clickedBtn.text)
+        val bundle = Bundle()
+
+        if (map != null) {
+            for ((key, value) in map) {
+                when (value) {
+                    is String -> bundle.putString(key, value)
+                    is Int -> bundle.putInt(key, value)
+                    is Boolean -> bundle.putBoolean(key, value)
+                    is Float -> bundle.putFloat(key, value)
+                }
+            }
+        }
+
+        intent.putExtras(bundle)
         startActivity(intent)
     }
+
 }

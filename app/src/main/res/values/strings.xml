@@ -12,7 +12,7 @@
     <string name="continue_btn">Continue</string>
     <string name="username">Username</string>
     <string name="invalid_credentials">Invalid Credentials</string>
-    <string name="login_successful">Login successful</string>
+    <string name="login_successful">Login successfull</string>
     <string name="error_checking_username">Error checking username.</string>
     <string name="registration_successful">Registration successful.</string>
     <string name="registration_failed">Registration failed.</string>
@@ -39,7 +39,7 @@
     <string name="history_of_diabetes">History of Diabetes</string>
     <string name="if_yes_enter_number_of_years_of_disease">If yes, enter number of years of disease</string>
     <string name="history_of_hypertension">History of Hypertension</string>
-    <string name="type_of_medication">Type of Medication</string>
+    <string name="type_of_medication">Type of Medication (If multiple, separate with comma)</string>
     <string name="hours_of_sleep">Hours of Sleep</string>
     <string name="dietary_habit">Dietary Habit</string>
     <string name="hydration_reminder">Hydration Reminder</string>
@@ -55,13 +55,13 @@
         <item>Unemployed</item>
     </string-array>
     <string-array name="education_level_array">
-        <item>Illiterate</item>
         <item>Primary School</item>
         <item>Middle School</item>
         <item>High School</item>
         <item>Intermediate/Diploma</item>
         <item>Graduate</item>
         <item>Professional Degree</item>
+        <item>Other</item>
     </string-array>
     <string-array name="yes_no">
         <item>Yes</item>
@@ -73,4 +73,5 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

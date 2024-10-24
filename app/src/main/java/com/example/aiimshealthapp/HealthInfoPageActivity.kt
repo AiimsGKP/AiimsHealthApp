@@ -15,101 +15,86 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import com.example.aiimshealthapp.databinding.ActivityHealthInfoBinding
+import com.example.aiimshealthapp.databinding.ActivityHealthInfoPageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.Serializable
 
 class HealthInfoPageActivity : AppCompatActivity() {
-    private var viewIds = mutableListOf<Int>()
-    private lateinit var mainLayout: RelativeLayout
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val currentUser = auth.currentUser
     private val collection = "fact_collection"
-    private var maxCardViewId = 0
     private val tag = "CHECK_RESPONSE"
     private lateinit var progressBar : ProgressBar
+    lateinit var binding:ActivityHealthInfoPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_health_info_page)
-        mainLayout = findViewById(R.id.main_layout)
+        binding = ActivityHealthInfoPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        updatePage()
-        setLoading(true, progressBar)
-    }
-
-
-    private fun updatePage(){
-        val given_topic = intent.getStringExtra("topic")
-        if(currentUser!=null){
-            db.collection(collection)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    if (!querySnapshot.isEmpty) {
-                        for (document in querySnapshot) {
-                            val data = document.data
-                            val facts = data["facts"] as? List<Map<String, Any>>
-                            if (facts != null) {
-                                for(fact in facts){
-                                    val topic = fact["topic"] as? String
-                                    if(topic == given_topic){
-                                        val title = fact["fact"] as? String
-                                        val source = fact["source"] as? String
-                                        generateUniqueId { count ->
-                                            val uniqueId = count + 1
-                                            if (title != null) {
-                                                setLoading(false, progressBar)
-                                                generateTimeLayout(uniqueId, title, source.toString())
-                                            }
-                                        }
-
-
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        Log.i(tag, "No documents found in the collection.")
-                    }
-
-                }
+//        setLoading(true, progressBar)
+        loadListeners()
+        val receivedMap = intent.getSerializableExtra("myMap") as? HashMap<String, Serializable>
+        if (receivedMap != null) {
+            Log.i("TargetActivity", "Received Map: $receivedMap")
         }
     }
 
-    private fun generateTimeLayout(cardViewId: Int, title: String, source: String) {
-
-        val inflater = LayoutInflater.from(this)
-        val cardView = inflater.inflate(R.layout.card_fact_view, mainLayout, false) as CardView
-
-        cardView.id = cardViewId
-        viewIds.add(cardViewId)
-
-        val params = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-
-        if (viewIds.size > 1) {
-            params.topMargin = 16
-            params.addRule(RelativeLayout.BELOW, viewIds[viewIds.size - 2])
-        } else {
-            params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+    private fun loadListeners() {
+        binding.definition.setOnClickListener{
+            if(binding.definitionContent.isVisible){
+                binding.definitionContent.visibility = View.GONE
+                binding.expandDef.setImageResource(R.drawable.ic_down_arrow)
+            }
+            else{
+                binding.definitionContent.visibility = View.VISIBLE
+                binding.expandDef.setImageResource(R.drawable.ic_up_arrow)
+            }
         }
-
-        cardView.layoutParams = params
-        val factView = cardView.findViewById<TextView>(R.id.factView)
-        factView.text = title
-        val sourceView = cardView.findViewById<TextView>(R.id.sourceView)
-        sourceView.text = source
-
-        mainLayout.addView(cardView)
-
-
-    }
-
-    private fun generateUniqueId(callback: (Int) -> Unit) {
-        maxCardViewId += 1
-        callback(maxCardViewId)
+        binding.causes.setOnClickListener{
+            if(binding.causesContent.isVisible){
+                binding.causesContent.visibility = View.GONE
+                binding.expandCauses.setImageResource(R.drawable.ic_down_arrow)
+            }
+            else{
+                binding.causesContent.visibility = View.VISIBLE
+                binding.expandCauses.setImageResource(R.drawable.ic_up_arrow)
+            }
+        }
+        binding.prevention.setOnClickListener{
+            if(binding.preventionContent.isVisible){
+                binding.preventionContent.visibility = View.GONE
+                binding.expandPrevention.setImageResource(R.drawable.ic_down_arrow)
+            }
+            else{
+                binding.preventionContent.visibility = View.VISIBLE
+                binding.expandPrevention.setImageResource(R.drawable.ic_up_arrow)
+            }
+        }
+        binding.symptoms.setOnClickListener{
+            if(binding.symptomsContent.isVisible){
+                binding.symptomsContent.visibility = View.GONE
+                binding.expandSymptoms.setImageResource(R.drawable.ic_down_arrow)
+            }
+            else{
+                binding.symptomsContent.visibility = View.VISIBLE
+                binding.expandSymptoms.setImageResource(R.drawable.ic_up_arrow)
+            }
+        }
+        binding.whatToEat.setOnClickListener{
+            if(binding.whatToEatContent.isVisible){
+                binding.whatToEatContent.visibility = View.GONE
+                binding.expandWhatToEat.setImageResource(R.drawable.ic_down_arrow)
+            }
+            else{
+                binding.whatToEatContent.visibility = View.VISIBLE
+                binding.expandWhatToEat.setImageResource(R.drawable.ic_up_arrow)
+            }
+        }
     }
 
     fun setLoading(loading: Boolean, progressBar: ProgressBar) {

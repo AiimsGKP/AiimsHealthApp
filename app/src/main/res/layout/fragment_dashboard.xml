@@ -1,4 +1,4 @@
-    <ScrollView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,6 +19,14 @@
             android:src="@drawable/dashboard"
             android:scaleType="centerCrop" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PERSONAL"
+            android:textSize="16sp"
+            android:textColor="@color/neutral_dark_1"
+            android:padding="10dp"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +44,7 @@
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="108dp"
+                android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginStart="108dp"
                 android:layout_marginTop="16dp"
@@ -58,7 +66,7 @@
 
             <TextView
                 android:id="@+id/fullName"
-                android:layout_width="174dp"
+                android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginStart="108dp"
                 android:layout_marginTop="44dp"
@@ -77,6 +85,7 @@
             android:layout_margin="8dp">
 
             <View
+                android:id="@+id/view4"
                 style="@style/CardBackgroundStyle"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
@@ -89,187 +98,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="38dp"
                 android:indeterminateTint="@color/progressbar"
                 android:progressTint="@color/progressbar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.467" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/fullCircleProgressBar1"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="How well are you?"
-                    android:textSize="18sp"
-                    android:textColor="@color/neutral_dark_1"/>
-
-                <ImageView
-                    android:id="@+id/arrow1"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/next"
-                    android:visibility="visible" />
-            </LinearLayout>
-
-            <com.example.aiimshealthapp.FullCircleProgressBar
-                android:id="@+id/fullCircleProgressBar3"
-                android:visibility="visible"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="16dp"
-                app:fullBackgroundColor="@color/bsocial"
-                app:fullGradientEndColor="@color/fsocial"
-                app:fullGradientStartColor="@color/fsocial"
-                app:layout_constraintBottom_toBottomOf="@id/fullCircleProgressBar2"
-                app:layout_constraintEnd_toEndOf="@id/fullCircleProgressBar2"
-                app:layout_constraintStart_toStartOf="@id/fullCircleProgressBar2"
-                app:layout_constraintTop_toTopOf="@id/fullCircleProgressBar2" />
-
-            <com.example.aiimshealthapp.FullCircleProgressBar
-                android:id="@+id/fullCircleProgressBar2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_margin="16dp"
-                android:visibility="visible"
-                app:fullBackgroundColor="@color/bmental"
-                app:fullGradientEndColor="@color/fmental"
-                app:fullGradientStartColor="@color/fmental"
-                app:layout_constraintBottom_toBottomOf="@id/fullCircleProgressBar1"
-                app:layout_constraintEnd_toEndOf="@id/fullCircleProgressBar1"
-                app:layout_constraintStart_toStartOf="@id/fullCircleProgressBar1"
-                app:layout_constraintTop_toTopOf="@id/fullCircleProgressBar1"
-                app:layout_constraintVertical_bias="0.46" />
-
-            <com.example.aiimshealthapp.FullCircleProgressBar
-                android:id="@+id/fullCircleProgressBar1"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_margin="16dp"
-                android:visibility="visible"
-                app:fullBackgroundColor="@color/bphysical"
-                app:fullGradientEndColor="@color/fphysical"
-                app:fullGradientStartColor="@color/fphysical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.429" />
-
-            <LinearLayout
-                android:id="@+id/speedometer_content"
-                android:visibility="visible"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp"
-                android:padding="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/fullCircleProgressBar1">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/physical_dot"/>
-                    <TextView
-                        android:id="@+id/physcialScore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="17sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/mental_dot"/>
-                    <TextView
-                        android:id="@+id/mentalScore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="17sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/social_dot"/>
-                    <TextView
-                        android:id="@+id/socialScore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="17sp" />
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            >
-            <View
-                style="@style/CardBackgroundStyle"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/progressbar"
-                android:progressTint="@color/progressbar"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/llSpeedometer"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="14dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -277,17 +119,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Healthy living tips?"
-                        android:textSize="18sp"
-                        android:textColor="@color/neutral_dark_1"/>
+                        android:text="How well are you?"
+                        android:textColor="@color/neutral_dark_1"
+                        android:textSize="18sp" />
+
                     <ImageView
-                        android:id="@+id/arrow2"
+                        android:id="@+id/arrow1"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="end"
@@ -295,43 +140,168 @@
                         android:visibility="visible" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvFact"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:gravity="start"
-                    android:padding="5dp"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="visible" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+                    <com.example.aiimshealthapp.FullCircleProgressBar
+                        android:id="@+id/fullCircleProgressBar1"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="16dp"
+                        android:visibility="visible"
+                        app:fullBackgroundColor="@color/bphysical"
+                        app:fullGradientEndColor="@color/fphysical"
+                        app:fullGradientStartColor="@color/fphysical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.429" />
+
+                    <com.example.aiimshealthapp.FullCircleProgressBar
+                        android:id="@+id/fullCircleProgressBar2"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="16dp"
+                        android:visibility="visible"
+                        app:fullBackgroundColor="@color/bmental"
+                        app:fullGradientEndColor="@color/fmental"
+                        app:fullGradientStartColor="@color/fmental"
+                        app:layout_constraintBottom_toBottomOf="@id/fullCircleProgressBar1"
+                        app:layout_constraintEnd_toEndOf="@id/fullCircleProgressBar1"
+                        app:layout_constraintStart_toStartOf="@id/fullCircleProgressBar1"
+                        app:layout_constraintTop_toTopOf="@id/fullCircleProgressBar1"
+                        app:layout_constraintVertical_bias="0.46" />
+
+                    <com.example.aiimshealthapp.FullCircleProgressBar
+                        android:id="@+id/fullCircleProgressBar3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="16dp"
+                        android:visibility="visible"
+                        app:fullBackgroundColor="@color/bsocial"
+                        app:fullGradientEndColor="@color/fsocial"
+                        app:fullGradientStartColor="@color/fsocial"
+                        app:layout_constraintBottom_toBottomOf="@id/fullCircleProgressBar2"
+                        app:layout_constraintEnd_toEndOf="@id/fullCircleProgressBar2"
+                        app:layout_constraintStart_toStartOf="@id/fullCircleProgressBar2"
+                        app:layout_constraintTop_toTopOf="@id/fullCircleProgressBar2" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvTopic"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/tvSource"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp"
+                    android:padding="5dp">
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textSize="10sp"
-                        android:visibility="visible" />
-                </LinearLayout>
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/physical_dot"/>
+                        <TextView
+                            android:id="@+id/physicalScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/mental_dot"/>
+                        <TextView
+                            android:id="@+id/mentalScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="17sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/social_dot"/>
+                        <TextView
+                            android:id="@+id/socialScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+
 
             </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/speedometer_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ready to Discover Your Health Score?"
+                    android:textSize="18sp"
+                    android:textColor="@color/neutral_dark_1"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Take a quick assessment to get an accurate overview of your physical, mental, and social well-being. \nThis score will help us provide you with personalized recommendations for a healthier you!"
+                    android:textAlignment="center"
+                    />
+
+                <Button
+                    android:id="@+id/takeTestBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Take Test"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/highlight_2"
+                    android:textColor="@color/highlight_2"/>
+
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stepCounterBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -377,6 +347,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/stepCounterTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4,753"
@@ -385,6 +356,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvStepGoal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="/6,000"
@@ -393,10 +365,10 @@
 
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/tvCalories"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="300 cal"
-                        android:textSize="16sp"
                         android:textColor="@color/neutral_light_1"/>
 
                 </LinearLayout>
@@ -446,9 +418,11 @@
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/hydrationbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground">
 
                 <View
                     style="@style/CardBackgroundStyle"
@@ -480,6 +454,7 @@
                         android:textColor="@color/neutral_dark_1"/>
 
                     <Switch
+                        android:id="@id/hydrationReminder"
                         android:checked="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -492,9 +467,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/medicationbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                >
 
                 <View
                     style="@style/CardBackgroundStyle"
@@ -526,6 +503,7 @@
                         android:textColor="@color/neutral_dark_1"/>
 
                     <Switch
+                        android:id="@+id/medicationReminder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:track="@drawable/bg_track"
@@ -543,6 +521,111 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="DISCOVER"
+            android:textColor="@color/neutral_dark_1"
+            android:textSize="16sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/background"
+                android:scaleType="centerCrop"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/progressbar"
+                android:progressTint="@color/progressbar"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="14dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Healthy living tips"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/neutral_dark_1"/>
+                    <ImageView
+                        android:id="@+id/arrow2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="end"
+                        android:src="@drawable/next"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvFact"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTopic"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tvSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="10sp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:layout_width="wrap_content"

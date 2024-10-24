@@ -28,7 +28,7 @@
             <View
                 style="@style/CardBackgroundStyle"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,11 +96,10 @@
                 android:src="@drawable/illust"/>
 
             <TextView
+                android:id="@+id/steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text=" 1. This can be done while standing OR sitting \n 2. Perform a chin tuck by keeping your chin parallel..."/>
-
+                android:padding="10dp"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,70 +3,340 @@ package com.example.aiimshealthapp
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
-import android.app.TimePickerDialog
+import android.Manifest
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.cardview.widget.CardView
-import com.google.android.material.textfield.TextInputEditText
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Data
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.aiimshealthapp.databinding.ActivityMedicationReminderBinding
+import com.example.aiimshealthapp.models.Medication
+import com.example.aiimshealthapp.models.Timer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
+import java.util.UUID
+import java.util.concurrent.TimeUnit
 
-class MedicationReminderActivity : AppCompatActivity() {
-    private var viewIds = mutableListOf<Int>()
-    private lateinit var mainLayout: RelativeLayout
+class MedicationReminderActivity : AppCompatActivity(), OnMedTimerRemoveListener {
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
+    private lateinit var binding: ActivityMedicationReminderBinding // Declare a binding variable
+    private lateinit var timerAdapter: MedicationAdapter
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val currentUser = auth.currentUser
-    private var timers = mutableListOf<Timer>()
-    private var maxCardViewId = 0
+    private val timerList: MutableList<Timer> = mutableListOf()
     private val tag = "CHECK_RESPONSE"
-    private lateinit var progressBar : ProgressBar
+    private val workRequestIds: MutableMap<String, UUID> = mutableMapOf() // Map to hold timer titles and their WorkRequest IDs
+
+    companion object {
+        private const val REQUEST_NOTIFICATION_PERMISSION = 1001
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_medication_reminder)
-        mainLayout = findViewById(R.id.main_layout)
-        mainLayout.visibility = View.VISIBLE
 
-        progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val medicationReminderSwitch = findViewById<SwitchCompat>(R.id.medicationReminder)
+        sharedPreferences = getSharedPreferences("reminders", Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
 
-        medicationReminderSwitch.setOnCheckedChangeListener { _, isChecked ->
-            mainLayout.visibility = if (isChecked) View.VISIBLE else View.GONE
+        checkNotificationPermission()
+        binding = ActivityMedicationReminderBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        loadTimers()
+        binding.addTimer.setOnClickListener {
+            addTimer()
+        }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
         }
 
-        val addTimerBtn = findViewById<Button>(R.id.addTimer)
-        addTimerBtn.setOnClickListener {
-            generateUniqueId { count ->
-                val uniqueId = count + 1
-                addTimer(uniqueId)
+        binding.medicationReminder.isChecked = sharedPreferences.getBoolean("medication", true)
+        toggleSwitch(sharedPreferences.getBoolean("medication", true))
+
+        animateDrawable(binding.onImage, R.drawable.medicine_icon_on)
+        animateDrawable(binding.offImage, R.drawable.medicine_icon_off)
+
+        binding.medicationReminder.setOnCheckedChangeListener { _, isChecked ->
+            toggleSwitch(isChecked)
+        }
+        scheduleActivity()
+    }
+
+    private fun toggleSwitch(isChecked : Boolean){
+        if(isChecked){
+            binding.medicationText.text = "On"
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.disabledTimer.visibility = View.GONE
+            if(timerList.size == 0) {
+                binding.emptyTimer.visibility = View.VISIBLE
             }
-            medicationReminderSwitch.isChecked = true
+            else{
+                binding.emptyTimer.visibility = View.GONE
+            }
+            editor.putBoolean("medication", true)
+            editor.apply()
+        }else{
+            binding.medicationText.text = "Off"
+            binding.recyclerView.visibility = View.GONE
+            binding.disabledTimer.visibility = View.VISIBLE
+            binding.emptyTimer.visibility = View.GONE
+            for(i in timerList){
+                cancelScheduledNotification(i.cardViewId)
+            }
+            editor.putBoolean("medication", false)
+            editor.apply()
+        }
+    }
+
+    private fun animateDrawable(imageView: ImageView, @DrawableRes drawableId: Int) {
+        // Load the vector drawable
+        val drawable = ContextCompat.getDrawable(imageView.context, drawableId)
+
+        // Check if the drawable is an AnimatedVectorDrawable
+        if (drawable is AnimatedVectorDrawable) {
+            imageView.setImageDrawable(drawable)
+            drawable.start()
+        } else if (drawable is VectorDrawable) {
+            // If the drawable is a VectorDrawable, add animation programmatically
+            imageView.setImageDrawable(drawable)
+
+            // Assume the group name to animate is "water_wave_group", you can generalize this based on the specific drawable
+            val objectAnimator = ObjectAnimator.ofFloat(imageView, "translationY", 0f, 15f)
+            objectAnimator.duration = 1000
+            objectAnimator.repeatCount = ObjectAnimator.INFINITE
+            objectAnimator.repeatMode = ObjectAnimator.REVERSE
+            objectAnimator.start()
+        } else {
+            // If it's not a vector, just set the image normally
+            imageView.setImageDrawable(drawable)
+        }
+    }
+
+    override fun onRemove(timer: Timer) {
+        cancelScheduledNotification(timer.cardViewId)
+        timerList.remove(timer) // Remove the timer from the list
+        timerAdapter.notifyDataSetChanged()
+        updateDatabase()
+    }
+
+    override fun onUpdate(timer: Timer) {
+        val view = layoutInflater.inflate(R.layout.medication_dialog, null)
+        val timePicker = view.findViewById<TimePicker>(R.id.timePicker)
+        val title = view.findViewById<EditText>(R.id.editTextTime)
+        title.setText(timer.title)
+
+        // Create the TimePickerDialog using the custom view
+        title?.requestFocus()
+        val timePickerDialog = AlertDialog.Builder(this)
+            .setTitle("Update Timer")
+            .setView(view)
+            .setPositiveButton("OK") { _, _ ->
+                val hourOfDay = timePicker.hour
+                val minute = timePicker.minute
+                val amPm = if (hourOfDay >= 12) "pm" else "am"
+                val hour = if (hourOfDay % 12 == 0) 12 else hourOfDay % 12
+                timer.title = title.text.toString()
+                timer.hour = hour.toString()
+                timer.minute = minute.toString()
+                timer.amPm = amPm
+                updateDatabase()
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .create()
+
+        // Set custom colors for dialog buttons
+        timePickerDialog.setOnShowListener {
+            timePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.neutral_dark_1))
+            timePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.neutral_dark_1))
         }
 
-        maxCardViewId = getMaxCardViewIdFromDatabase()
+        timePickerDialog.show()
+        timerAdapter.notifyDataSetChanged()
+    }
 
-        updatePage()
+    override fun onDisable(timer: Timer) {
+        if(!timer.activated){
+            cancelScheduledNotification(timer.cardViewId)
+        }
+        else{
+            scheduleDailyNotification(timer.cardViewId, timer.hour.toInt(), timer.minute.toInt(), timer.title)
+        }
+        updateDatabase()
+    }
+
+    private fun checkNotificationPermission() {
+        // Only request permission if the app is running on Android 13 or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                // Request the POST_NOTIFICATIONS permission
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    REQUEST_NOTIFICATION_PERMISSION
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.i("CHECK_RESPONSE", "Notification permission granted")
+            } else {
+                Log.e("CHECK_RESPONSE", "Notification permission denied")
+            }
+        }
+    }
+
+    private fun loadTimers(){
+        if(currentUser!= null) {
+            db.collection("medication")
+                .whereEqualTo("user.email", currentUser.email)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    if(querySnapshot == null){
+                        updatePage()
+                    }
+                    else{
+                        for (document in querySnapshot) {
+                            val data = document.data
+                            val timerss = data["timers"] as? List<Map<String, Any>>
+                            if (timerss != null) {
+                                for(timer in timerss){
+                                    val activated = (timer["activated"] as? Boolean) ?: true
+                                    val title = timer["title"] as? String
+                                    val id = timer["cardViewId"] as? String
+                                    val hour = timer["hour"] as? String
+                                    val minute = timer["minute"] as? String
+                                    val amPm = timer["amPm"] as? String
+
+                                    timerList.add(Timer(title.toString(), activated, id.toString(), hour.toString(), minute.toString(), amPm.toString()))
+                                }
+                                updatePage()
+                            }
+
+                        }
+                    }
+                }
+        }
+    }
+    private fun updatePage(){
+        if(binding.medicationReminder.isChecked){
+            if (timerList.size == 0){
+                binding.emptyTimer.visibility = View.VISIBLE
+            }
+            else{
+                binding.emptyTimer.visibility = View.GONE
+            }
+        }
+        timerAdapter = MedicationAdapter(timerList, this)
+        binding.recyclerView.adapter = timerAdapter
+        scheduleActivity()
 
     }
 
+
+
+    private fun addTimer() {
+        // Inflate the custom layout
+        val view = layoutInflater.inflate(R.layout.medication_dialog, null)
+        val timePicker = view.findViewById<TimePicker>(R.id.timePicker)
+        val title = view.findViewById<EditText>(R.id.editTextTime)
+        // Create the TimePickerDialog using the custom view
+        title?.requestFocus()
+        val timePickerDialog = AlertDialog.Builder(this)
+            .setTitle("Select Time")
+            .setView(view)
+            .setPositiveButton("OK") { _, _ ->
+                val hourOfDay = timePicker.hour
+                val minute = timePicker.minute
+                val amPm = if (hourOfDay >= 12) "pm" else "am"
+                val hour = if (hourOfDay % 12 == 0) 12 else hourOfDay % 12
+
+                val timer = Timer(title.text.toString(), true, "", hour.toString(), minute.toString(), amPm)
+                timerList.add(timer)
+                binding.medicationReminder.isChecked = true
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.disabledTimer.visibility = View.GONE
+                updateDatabase()
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .create()
+
+        // Set custom colors for dialog buttons
+        timePickerDialog.setOnShowListener {
+            timePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.neutral_dark_1))
+            timePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.neutral_dark_1))
+        }
+
+        timePickerDialog.show()
+    }
+
+    fun assignCardViewIds() {
+        for (index in timerList.indices) {
+            // Assign a unique ID, for example, "timer_<index>"
+            timerList[index].cardViewId = "$index"
+        }
+    }
+    private fun updateDatabase() {
+        if (currentUser != null) {
+            val username = currentUser.email.toString().substringBefore("@")
+            val user = User(username ?: "Unknown User", currentUser.email ?: "No Email")
+            val userId = auth.currentUser?.uid ?: "unknown_user"
+            assignCardViewIds()
+            val medication = Medication(user, timerList)
+            db.collection("medication")
+                .whereEqualTo("user.email", currentUser.email)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (querySnapshot.isEmpty) {
+                        db.collection("medication").document(userId).set(medication)
+                            .addOnSuccessListener {
+                                updatePage()
+                            }
+                    } else {
+                        val document = querySnapshot.documents.first()
+                        val documentId = document.id
+                        val newData = medication.toMap()
+                        db.collection("medication").document(documentId)
+                            .set(newData)
+                            .addOnSuccessListener {
+                                updatePage()
+                            }
+                    }
+                }
+
+        }
+    }
     private fun scheduleActivity() {
         if (currentUser != null) {
             val username = currentUser.email.toString().substringBefore("@")
@@ -89,257 +359,19 @@ class MedicationReminderActivity : AppCompatActivity() {
                                     val minute = timer["minute"] as? String
                                     val amPm = timer["amPm"] as? String
                                     if(amPm == "pm"){
-                                        if (hour != null) {
+                                        if (hour != null && hour.toInt() < 12) {
                                             hour = (hour.toInt() + 12).toString()
                                         }
                                     }
-                                    if(activated){
-                                        val calendar = Calendar.getInstance().apply {
-                                            if (hour != null) {
-                                                set(Calendar.HOUR_OF_DAY, hour.toInt())
-                                            }  // Set the hour for the notification
-                                            if (minute != null) {
-                                                set(Calendar.MINUTE, minute.toInt())
-                                            }        // Set the minute for the notification
-                                            set(Calendar.SECOND, 0)        // Set the second for the notification
+                                    else if(amPm == "am"){
+                                        if (hour != null && hour.toInt() == 12) {
+                                            hour = "0"
                                         }
-                                        val timeInMillis = calendar.timeInMillis
-                                        scheduleNotification(this, id.toString(), timeInMillis, title.toString())
                                     }
-                                }
-                            }
-                        }
-                    }}}
-    }
-
-    private fun updateDatabase() {
-        if (currentUser != null) {
-            val username = currentUser.email.toString().substringBefore("@")
-            val user = User(username ?: "Unknown User", currentUser.email ?: "No Email")
-            val userId = auth.currentUser?.uid ?: "unknown_user"
-            val medication = Medication(user, timers)
-            db.collection("medication")
-                .whereEqualTo("user.email", currentUser.email)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    if (querySnapshot.isEmpty) {
-                        db.collection("medication").document(userId).set(medication)
-                            .addOnSuccessListener {
-                                updatePage()
-                            }
-                    } else {
-                        val document = querySnapshot.documents.first()
-                        val documentId = document.id
-                        val newData = medication.toMap()
-                        db.collection("medication").document(documentId)
-                            .set(newData)
-                            .addOnSuccessListener {
-                                updatePage()
-                            }
-                    }
-                }
-        }
-    }
-
-    private fun updatePage() {
-        setLoading(true, progressBar)
-        mainLayout.removeAllViews()
-        timers = mutableListOf<Timer>()
-        viewIds = mutableListOf<Int>()
-        if(currentUser!= null) {
-            db.collection("medication")
-                .whereEqualTo("user.email", currentUser.email)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    if (querySnapshot!= null) {
-                        for (document in querySnapshot) {
-                            val data = document.data
-                            val timerss = data["timers"] as? List<Map<String, Any>>
-                            if (timerss != null) {
-                                for(timer in timerss){
-                                    val title = timer["title"] as? String
-                                    val activated = (timer["activated"] as? Boolean) ?: true
-                                    val id = timer["cardViewId"] as? String
-                                    val hour = timer["hour"] as? String
-                                    val minute = timer["minute"] as? String
-                                    val amPm = timer["amPm"] as? String
-
-                                    timers.add(Timer(title.toString(), activated, id.toString(), hour.toString(), minute.toString(), amPm.toString()))
-                                    generateTimeLayout(title.toString(), activated, id.toString().toInt(), hour.toString().toInt(), minute.toString().toInt(), amPm.toString())
-                                }
-                                setLoading(false, progressBar)
-                            }
-
-                        }
-                    }
-                }
-        }
-        scheduleActivity()
-    }
-
-    private fun generateTimeLayout(title:String, activated: Boolean, cardViewId: Int, hour: Int, minute: Int, amPm: String) {
-
-        val inflater = LayoutInflater.from(this)
-        val cardView = inflater.inflate(R.layout.card_medication_layout, mainLayout, false) as CardView
-
-        cardView.id = cardViewId
-        viewIds.add(cardViewId)
-
-        val params = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-
-        if (viewIds.size > 1) {
-            params.topMargin = 16
-            params.addRule(RelativeLayout.BELOW, viewIds[viewIds.size - 2])
-        } else {
-            params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-        }
-
-        cardView.layoutParams = params
-        val titleView = cardView.findViewById<TextView>(R.id.medicineTitle)
-        titleView.text = title
-        val timeTextView = cardView.findViewById<TextView>(R.id.timeTextView)
-        timeTextView.text = String.format("%02d:%02d %s", hour, minute, amPm)
-
-        val removeBtn = cardView.findViewById<Button>(R.id.removeBtn)
-        val activateBtn = cardView.findViewById<SwitchCompat>(R.id.activateBtn)
-        activateBtn.isChecked = activated
-        mainLayout.addView(cardView)
-
-        cardView.setOnClickListener {
-            updateTimer(cardViewId)
-        }
-
-        removeBtn.setOnClickListener {
-            removeTimer(cardViewId)
-        }
-        activateBtn.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                for(timer in timers){
-                    if(timer.cardViewId == cardViewId.toString()){
-                        timer.activated = true
-                        break
-                    }
-                }
-            }
-            else{
-                for(timer in timers){
-                    if(timer.cardViewId == cardViewId.toString()){
-                        timer.activated = false
-                        break
-                    }
-                }
-            }
-            updateDatabase()
-
-        }
-    }
-
-    private fun addTimer(cardViewId:Int){
-        val inflater = this.layoutInflater // Get the LayoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_time_picker, null) // Inflate the layout into a View
-
-        val editTextTime = dialogView.findViewById<EditText>(R.id.editTextTime)
-
-        val timePicker = dialogView.findViewById<TimePicker>(R.id.timePicker)
-
-        timePicker.setIs24HourView(false)
-        editTextTime?.requestFocus()
-        val timePickerDialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("Set") { dialog, _ ->
-                val hourOfDay = if (timePicker.hour == 0) 12 else timePicker.hour % 12
-                val minute = timePicker.minute
-                val amPm = if (timePicker.hour >= 12) "PM" else "AM"
-
-                val timer = Timer(editTextTime.text.toString(),true, cardViewId.toString(),hourOfDay.toString(), minute.toString(), amPm)
-                timers.add(timer)
-                updateDatabase()
-
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-
-        timePickerDialog.show()
-    }
-
-    private fun updateTimer(cardViewId: Int) {
-
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_time_picker, null)
-
-        val editTextTime = dialogView.findViewById<EditText>(R.id.editTextTime)
-
-        val timePicker = dialogView.findViewById<TimePicker>(R.id.timePicker)
-
-        timePicker.setIs24HourView(false)
-        for(timer in timers){
-            if(timer.cardViewId == cardViewId.toString()) {
-                editTextTime?.setText(timer.title)
-                break
-            }
-        }
-        val timePickerDialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("Set") { dialog, _ ->
-                val hourOfDay = if (timePicker.hour == 0) 12 else timePicker.hour % 12
-                val minute = timePicker.minute
-                val amPm = if (timePicker.hour >= 12) "PM" else "AM"
-
-                for(timer in timers){
-                    if(timer.cardViewId == cardViewId.toString()){
-                        timer.title = editTextTime.text.toString()
-                        timer.amPm = amPm
-                        timer.hour = hourOfDay.toString()
-                        timer.minute = minute.toString()
-                        break
-                    }
-                }
-                updateDatabase()
-
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-
-        timePickerDialog.show()
-    }
-
-    private fun removeTimer(cardViewId: Int) {
-
-        val timerToRemove = timers.find { it.cardViewId == cardViewId.toString() }
-        if (timerToRemove != null) {
-            timers.remove(timerToRemove)
-            viewIds.remove(cardViewId)
-
-
-            updateDatabase()
-        }
-    }
-
-    private fun getMaxCardViewIdFromDatabase(): Int {
-        var maxId = 0
-        if (currentUser != null) {
-            db.collection("medication")
-                .whereEqualTo("user.email", currentUser.email)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    if (querySnapshot != null) {
-                        for (document in querySnapshot) {
-                            val data = document.data
-                            val timerss = data["timers"] as? List<Map<String, Any>>
-                            if (timerss != null) {
-                                for (timer in timerss) {
-                                    val id = timer["cardViewId"]?.toString()?.toIntOrNull() ?: 0
-                                    if (id > maxId) {
-                                        maxId = id
+                                    if(activated){
+                                        if (hour != null && minute != null && title != null) {
+                                            scheduleDailyNotification(id.toString(), hour.toInt(), minute.toInt(), title)
+                                        }
                                     }
                                 }
                             }
@@ -347,72 +379,48 @@ class MedicationReminderActivity : AppCompatActivity() {
                     }
                 }
         }
-        return maxId
     }
 
+    private fun scheduleDailyNotification(timerId: String, hour: Int = 0, minute: Int = 0, title: String) {
 
-    private fun generateUniqueId(callback: (Int) -> Unit) {
-        maxCardViewId += 1
-        callback(maxCardViewId)
-    }
+        cancelScheduledNotification(timerId)
+        val currentTime = Calendar.getInstance().timeInMillis
+        Log.i(tag, "Scheduled time: $hour : $minute")
 
-    fun scheduleNotification(context: Context, id:String, timeInMillis: Long, title:String) {
+        val inputData = Data.Builder()
+            .putString("NOTIFICATION_TITLE", title)
+            .putString("NOTIFICATION_MESSAGE", "It's time to take your medication!!")
+            .build()
 
-        val currentTimeInMillis = System.currentTimeMillis()
-        Log.i(tag, timeInMillis.toString())
-        Log.i(tag, currentTimeInMillis.toString())
-        // Check if the timeInMillis is in the future
-        if (timeInMillis <= currentTimeInMillis) {
-            Log.e("CHECK_RESPONSE", "Skipping scheduling as the time is in the past")
-            return
-        }
-        // Create an intent to trigger the NotificationReceiver
-        val intent = Intent(context, NotificationReceiver::class.java).apply {
-            putExtra("notificationId", id)
-            putExtra("notificationTitle", "Medication Reminder")
-            putExtra("notificationText", title)
-        }
+        val targetTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+        }.timeInMillis
 
-        // Create a PendingIntent to be triggered by the AlarmManager
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        // Get the AlarmManager service
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        // Check for permission to schedule exact alarms if running on Android S or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            Log.e("CHECK_RESPONSE", "Cannot schedule exact alarms, requesting permission")
-            val settingsIntent = Intent().apply {
-                action = android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                data = Uri.parse("package:${context.packageName}")
-            }
-            context.startActivity(settingsIntent)
-            return
-        }
-
-        // Schedule the alarm to trigger the notification
-        try {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                timeInMillis,
-                pendingIntent
-            )
-            Log.e("CHECK_RESPONSE", "Alarm scheduled")
-        } catch (e: SecurityException) {
-            Log.e("CHECK_RESPONSE", "SecurityException: ${e.message}")
-        }
-    }
-    fun setLoading(loading: Boolean, progressBar: ProgressBar) {
-        if (loading) {
-            progressBar.visibility = View.VISIBLE // Show the ProgressBar
+        val delay = if (targetTime > currentTime) {
+            targetTime - currentTime
         } else {
-            progressBar.visibility = View.GONE // Hide the ProgressBar
+            targetTime + TimeUnit.DAYS.toMillis(1) - currentTime
         }
+
+        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(24, TimeUnit.HOURS)
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInputData(inputData)
+            .build()
+
+        // Store the unique ID of the work request in the map with timer ID as the key
+        workRequestIds[timerId] = workRequest.id
+
+        // Enqueue the work request
+        WorkManager.getInstance(this).enqueue(workRequest)
+    }
+    private fun cancelScheduledNotification(timerId: String) {
+        workRequestIds[timerId]?.let { workRequestId ->
+            WorkManager.getInstance(this).cancelWorkById(workRequestId)
+            Log.i(tag, "Canceled notification for timer ID: $timerId")
+            workRequestIds.remove(timerId) // Remove the entry after cancellation
+        } ?: Log.w(tag, "No scheduled notification found for timer ID: $timerId")
     }
 
 }

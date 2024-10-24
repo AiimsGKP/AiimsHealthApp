@@ -35,7 +35,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun AIIMSHealthAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Set darkTheme to false to enforce light mode
+    darkTheme: Boolean = false,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -43,11 +44,9 @@ fun AIIMSHealthAppTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            dynamicLightColorScheme(context) // Always use dynamic light color scheme
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> LightColorScheme // Use your predefined light color scheme
     }
 
     MaterialTheme(

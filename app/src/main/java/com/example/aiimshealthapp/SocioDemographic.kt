@@ -1,6 +1,7 @@
 package com.example.aiimshealthapp
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,8 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.aiimshealthapp.models.Metrics
+import com.example.aiimshealthapp.models.MetricsData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -44,11 +47,12 @@ class SocioDemographic : AppCompatActivity() {
         setContentView(R.layout.activity_socio_demographic)
 
 
+
+
         val btnNext = findViewById<Button>(R.id.btnNext)
         btnNext.setOnClickListener {
             firstName = findViewById<EditText>(R.id.firstName).text.toString()
             lastName = findViewById<EditText>(R.id.lastName).text.toString()
-            gender = findViewById<Spinner>(R.id.gender).selectedItem.toString()
             age = findViewById<EditText>(R.id.age).text.toString()
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && age.isNotEmpty()) {
                 setContentView(R.layout.activity_income_data)

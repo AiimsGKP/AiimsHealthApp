@@ -9,6 +9,10 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.aiimshealthapp.models.Ques
+import com.example.aiimshealthapp.models.QuesModel
+import com.example.aiimshealthapp.models.Question
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.concurrent.CountDownLatch
@@ -22,7 +26,6 @@ class QuizPageActivity : AppCompatActivity() {
     private val socQuestionModel = mutableListOf<Ques>()
     private val Ques = mutableListOf<QuesModel>()
     private val ids = mutableListOf<Int>()
-    private lateinit var dashBtn : Button
     private val tag = "CHECK_RESPONSE"
 
 
@@ -31,13 +34,12 @@ class QuizPageActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_quiz_page)
 
-        val physicalBtn = findViewById<CardView>(R.id.cvPhysical)
-        val mentalBtn = findViewById<CardView>(R.id.cvMental)
-        val socialBtn = findViewById<CardView>(R.id.cvSocial)
-        dashBtn = findViewById(R.id.button2)
-        dashBtn.isEnabled = false
+        val physicalBtn = findViewById<ConstraintLayout>(R.id.cvPhysical)
+        val mentalBtn = findViewById<ConstraintLayout>(R.id.cvMental)
+        val socialBtn = findViewById<ConstraintLayout>(R.id.cvSocial)
+        val skipBtn = findViewById<TextView>(R.id.skipBtn)
         loadDatabase()
-
+        enableBtn()
         physicalBtn.setOnClickListener {
             loadPhysicalQues()
         }
@@ -50,18 +52,16 @@ class QuizPageActivity : AppCompatActivity() {
             loadSocialQues()
         }
 
-        dashBtn.setOnClickListener {
+        skipBtn.setOnClickListener {
             val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
             finish()
         }
 
-
     }
 
     private fun enableBtn(){
         var count = 0
-        dashBtn.isEnabled = false 
 
         if (currentUser != null) {
             db.collection("questions2")
@@ -77,10 +77,13 @@ class QuizPageActivity : AppCompatActivity() {
                                 val answers = quiz["answers"] as? List<String>
                                 if (!answers.isNullOrEmpty()) count += 1
                                 if (count == 3) {
-                                    dashBtn.isEnabled = true
+                                    val intent = Intent(this, Dashboard::class.java)
+                                    startActivity(intent)
+                                    finish()
                                     break
                                 }
                             }
+                            //progress bar stop
                         }
                         if (count == 3) break
                     }
@@ -89,6 +92,7 @@ class QuizPageActivity : AppCompatActivity() {
                 }
         }
     }
+
 
 
     private fun loadPhysicalQues(){
@@ -112,72 +116,94 @@ class QuizPageActivity : AppCompatActivity() {
 
     private fun loadDatabase(){
         // P1
-        physQuestionModel.add(Ques(listOf(
+        physQuestionModel.add(
+            Ques(listOf(
             "Does your work involve vigorous-intensity activity that causes large increases in breathing or heart rate like (carrying or lifting heavy loads, digging or construction work) for at least 10 minutes continuously? \n" +
                     "क्या आपके काम में अत्यधिक तीव्रता वाली गतिविधि शामिल है जिससे सांस लेने या हृदय गति में बहुत अधिक वृद्धि होती है जैसे (भारी वजन उठाना या उठाना, खुदाई या निर्माण कार्य) कम से कम 10 मिनट तक लगातार?\n",
             "In a typical week, on how many days do you do vigorous intensity activities as part of your work? \n" +
                     "एक सामान्य सप्ताह में आप कितने दिन जोरदार व्यायाम करते हैं - आपके काम के हिस्से के रूप में गहन गतिविधियाँ?\n",
             "How much time do you spend doing vigorous-intensity activities at work on a typical day? \n" +
                     "आप ज़ोरदार तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं? एक सामान्य दिन पर काम पर?\n"
-        )))
+        ))
+        )
 
 // P4
-        physQuestionModel.add(Ques(listOf(
+        physQuestionModel.add(
+            Ques(listOf(
             "Does your work involve moderate-intensity activity that causes small increases in breathing or heart rate such as brisk walking (or carrying light loads) for at least 10 minutes continuously? \n" +
                     "क्या आपके काम में मध्यम-तीव्रता वाली गतिविधि शामिल है, जिससे सांस लेने या हृदय गति में थोड़ी वृद्धि होती है जैसे कि कम से कम 10 मिनट तक लगातार तेज चलना (या हल्का भार उठाना)?\n",
             "In a typical week, on how many days do you do moderate-intensity activities as part of your work? \n" +
                     "एक सामान्य सप्ताह में आप कितने दिन मध्यम कार्य करते हैं- आपके काम के हिस्से के रूप में गहन गतिविधियाँ?\n",
             "How much time do you spend doing moderate-intensity activities at work on a typical day? \n" +
                     "आप मध्यम तीव्रता वाली गतिविधियाँ करने में कितना समय व्यतीत करते हैं? एक सामान्य दिन पर काम पर?\n"
-        )))
+        ))
+        )
 
 // P7
-        physQuestionModel.add(Ques(listOf(
+        physQuestionModel.add(
+            Ques(listOf(
             "Do you walk or use a bicycle (pedal cycle) for at least 10 minutes continuously to get to and from places? \n" +
                     "क्या आप किसी स्थान पर आने-जाने के लिए लगातार कम से कम 10 मिनट तक पैदल चलते हैं या साइकिल (पैडल साइकिल) का उपयोग करते हैं?\n",
             "In a typical week, on how many days do you walk or bicycle for at least 10 minutes continuously to get to and from places? \n" +
                     "एक सामान्य सप्ताह में आप कितने दिन पैदल चलते हैं या साइकिल चलाते हैं स्थानों पर आने-जाने के लिए लगातार कम से कम 10 मिनट?\n",
             "How much time do you spend walking or bicycling for travel on a typical day? \n" +
                     "आप यात्रा के लिए पैदल चलने या साइकिल चलाने में कितना समय व्यतीत करते हैं? किसी सामान्य दिन?\n"
-        )))
+        ))
+        )
 
 // P10
-        physQuestionModel.add(Ques(listOf(
+        physQuestionModel.add(
+            Ques(listOf(
             "Do you do any vigorous-intensity sports, fitness or recreational (leisure) activities that cause large increases in breathing or heart rate like (running or football) for at least 10 minutes continuously? \n" +
                     "क्या आप कोई ज़ोरदार खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ करते हैं जो कम से कम 10 मिनट तक लगातार (दौड़ना या फुटबॉल) जैसी सांस लेने या हृदय गति में बड़ी वृद्धि का कारण बनती हैं?\n",
             "In a typical week, on how many days do you do vigorous intensity sports, fitness or recreational (leisure) activities? \n" +
                     "एक सामान्य सप्ताह में आप कितने दिन जोरदार व्यायाम करते हैं गहन खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n",
             "How much time do you spend doing vigorous-intensity sports, fitness or recreational activities on a typical day? \n" +
                     "आप ज़ोरदार तीव्रता वाले खेल करने में कितना समय बिताते हैं, किसी सामान्य दिन में फिटनेस या मनोरंजक गतिविधियाँ?\n"
-        )))
+        ))
+        )
 
 // P13
-        physQuestionModel.add(Ques(listOf(
+        physQuestionModel.add(
+            Ques(listOf(
             "Do you do any moderate-intensity sports, fitness or recreational (leisure) activities that cause a small increase in breathing or heart rate such as brisk walking, (cycling, swimming, volleyball) for at least 10 minutes continuously? \n" +
                     "क्या आप कोई मध्यम-तीव्रता वाले खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ करते हैं जिससे सांस लेने या हृदय गति में थोड़ी वृद्धि होती है जैसे कि तेज चलना, (साइकिल चलाना, तैराकी, वॉलीबॉल) लगातार कम से कम 10 मिनट तक?\n",
             "In a typical week, on how many days do you do moderate intensity sports, fitness or recreational (leisure) activities? \n" +
                     "एक सामान्य सप्ताह में आप कितने दिन मध्यम कार्य करते हैं-गहन खेल, फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n",
             "How much time do you spend doing moderate-intensity sports, fitness or recreational (leisure) activities on a typical day? \n" +
                     "आप मध्यम तीव्रता वाले खेल करने में कितना समय व्यतीत करते हैं, किसी सामान्य दिन में फिटनेस या मनोरंजक (अवकाश) गतिविधियाँ?\n"
-        )))
+        ))
+        )
 //        physQuestionModel.add(Ques(listOf("","",
 //            "How much time do you usually spend sitting or reclining on a  typical day?  \n" +
 //            "आप आमतौर पर सामान्य दिन में कितना समय बैठे या लेटे हुए बिताते हैं?\n"
 //        )))
 
 
-        socQuestionModel.add(Ques(listOf("I experience a general sense of emptiness \n" +
-                "     मुझे खालीपन का सामान्य अहसास होता है \n")))
-        socQuestionModel.add(Ques(listOf("I miss having people around me [EL]\n" +
-                "     झे अपने आस-पास लोगों की कमी खलती है [EL] \n")))
-        socQuestionModel.add(Ques(listOf("I often feel rejected [EL]\n" +
-                "     मैं अक्सर खुद को नकारा हुआ महसूस करता हूँ [EL]\n")))
-        socQuestionModel.add(Ques(listOf("There are plenty of people I can rely on when I have problems \n" +
-                "     जब मुझे कोई समस्या होती है तो मैं कई लोगों पर भरोसा कर सकता हूँ [SL]\n")))
-        socQuestionModel.add(Ques(listOf("There are many people I can trust completely \n" +
-                "     कई लोग हैं जिन पर मैं पूरी तरह भरोसा कर सकता हूँ [SL]\n")))
-        socQuestionModel.add(Ques(listOf("There are enough people I feel close to \n" +
-                "     कई लोग हैं जिनके मैं करीब महसूस करता हूँ [SL]\n")))
+        socQuestionModel.add(
+            Ques(listOf("I experience a general sense of emptiness \n" +
+                "     मुझे खालीपन का सामान्य अहसास होता है \n"))
+        )
+        socQuestionModel.add(
+            Ques(listOf("I miss having people around me [EL]\n" +
+                "     झे अपने आस-पास लोगों की कमी खलती है [EL] \n"))
+        )
+        socQuestionModel.add(
+            Ques(listOf("I often feel rejected [EL]\n" +
+                "     मैं अक्सर खुद को नकारा हुआ महसूस करता हूँ [EL]\n"))
+        )
+        socQuestionModel.add(
+            Ques(listOf("There are plenty of people I can rely on when I have problems \n" +
+                "     जब मुझे कोई समस्या होती है तो मैं कई लोगों पर भरोसा कर सकता हूँ [SL]\n"))
+        )
+        socQuestionModel.add(
+            Ques(listOf("There are many people I can trust completely \n" +
+                "     कई लोग हैं जिन पर मैं पूरी तरह भरोसा कर सकता हूँ [SL]\n"))
+        )
+        socQuestionModel.add(
+            Ques(listOf("There are enough people I feel close to \n" +
+                "     कई लोग हैं जिनके मैं करीब महसूस करता हूँ [SL]\n"))
+        )
 
         menQuestionModel.add(Ques(listOf("I’ve been feeling optimistic about the Future.\n" + "मैं भविष्य को लेकर आशावादी महसूस कर रहा हूँ।\n")))
         menQuestionModel.add(Ques(listOf("I’ve been feeling useful.\n" + "मैं  उपयोगी महसूस कर रहा हूँ।\n")))
@@ -418,8 +444,7 @@ class QuizPageActivity : AppCompatActivity() {
                     firestore.collection("questions2").document(documentId)
                         .set(newData) // Use set() to replace the whole document or update fields
                         .addOnSuccessListener {
-                            enableBtn()
-                            Toast.makeText(baseContext, "Data Recorded successfully", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(baseContext, "Data Recorded successfully", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(baseContext, "Error Recording Data: ${e.message}", Toast.LENGTH_SHORT).show()
